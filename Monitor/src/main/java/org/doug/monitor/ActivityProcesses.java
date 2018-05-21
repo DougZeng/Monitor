@@ -43,8 +43,8 @@ public class ActivityProcesses extends Activity {
 	private int navigationBarHeight;
 								// List
 									// Map
-										// C.pId, value
-										// C.pName, value
+										// Constans.pId, value
+										// Constans.pName, value
 	private List<Map<String, Object>> mListProcesses = new ArrayList<Map<String, Object>>(),
 									   mListSelected = new ArrayList<Map<String, Object>>();
 	private SimpleAdapter mSA;
@@ -77,14 +77,14 @@ public class ActivityProcesses extends Activity {
 		if (Build.VERSION.SDK_INT >= 19) {
 			float sSW = res.getConfiguration().smallestScreenWidthDp, sD = res.getDisplayMetrics().density;
 			
-			int statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(C.sbh, C.dimen, C.android));
+			int statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.sbh, Constans.dimen, Constans.android));
 			
 			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 			if (!ViewConfiguration.get(this).hasPermanentMenuKey() && !KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME)
 					&& (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT || sSW > 560)) {
 				getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 				
-				navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(C.nbh, C.dimen, C.android));
+				navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.nbh, Constans.dimen, Constans.android));
 				if (navigationBarHeight == 0)
 					navigationBarHeight = (int) (48*sD);
 				
@@ -105,13 +105,13 @@ public class ActivityProcesses extends Activity {
 		
 		
 		if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-			mListProcesses = (List<Map<String, Object>>) savedInstanceState.getSerializable(C.listProcesses);
-			mListSelected = (List<Map<String, Object>>) savedInstanceState.getSerializable(C.listSelected);
+			mListProcesses = (List<Map<String, Object>>) savedInstanceState.getSerializable(Constans.listProcesses);
+			mListSelected = (List<Map<String, Object>>) savedInstanceState.getSerializable(Constans.listSelected);
 			if (mListSelected != null && !mListSelected.isEmpty()) {
 				for(Map<String, Object> process : mListProcesses)
 					for (Map<String, Object> selected : mListSelected)
-						if (process.get(C.pId).equals(selected.get(C.pId)))
-							process.put(C.pSelected, Boolean.TRUE);
+						if (process.get(Constans.pId).equals(selected.get(Constans.pId)))
+							process.put(Constans.pSelected, Boolean.TRUE);
 			} else mListSelected = new ArrayList<Map<String, Object>>();
 			
 		} else {
@@ -142,19 +142,19 @@ public class ActivityProcesses extends Activity {
 				
 				Collections.sort(mListProcesses, new Comparator<Map<String, Object>>(){
 					 public int compare(Map<String, Object> o1, Map<String, Object> o2){
-						 if(o1.get(C.pAppName).equals(o2.get(C.pAppName)))
+						 if(o1.get(Constans.pAppName).equals(o2.get(Constans.pAppName)))
 							 return 0;
-						 return ((String) o1.get(C.pAppName)).compareTo((String) o2.get(C.pAppName)) < 0 ? -1 : 1;
+						 return ((String) o1.get(Constans.pAppName)).compareTo((String) o2.get(Constans.pAppName)) < 0 ? -1 : 1;
 					 }
 				});
 				
-				List<Map<String, Object>> mListSelectedProv = (List<Map<String, Object>>) getIntent().getSerializableExtra(C.listSelected);
+				List<Map<String, Object>> mListSelectedProv = (List<Map<String, Object>>) getIntent().getSerializableExtra(Constans.listSelected);
 				if (mListSelectedProv != null && !mListSelectedProv.isEmpty()) {
 					for (Map<String, Object> processSelected : mListSelectedProv) {
 						Iterator<Map<String, Object>> iteratorListProcesses = mListProcesses.iterator();
 						while (iteratorListProcesses.hasNext()) {
 							Map<String, Object> process = iteratorListProcesses.next();
-							if (process.get(C.pId).equals(processSelected.get(C.pId)))
+							if (process.get(Constans.pId).equals(processSelected.get(Constans.pId)))
 								iteratorListProcesses.remove();
 						}
 					}
@@ -177,7 +177,7 @@ public class ActivityProcesses extends Activity {
 		}
 		
 		mSA = new SimpleAdapterCustomised(this, mListProcesses, R.layout.activity_processes_entry,
-				new String[] { C.pSelected, C.pPackage, C.pName, C.pId },
+				new String[] { Constans.pSelected, Constans.pPackage, Constans.pName, Constans.pId },
 				new int[] { R.id.LpBG, R.id.IVpIconBig, R.id.TVpAppName, R.id.TVpName });
 		
 		mLV.setAdapter(mSA);
@@ -187,20 +187,20 @@ public class ActivityProcesses extends Activity {
 				SimpleAdapterCustomised.Tag tag = (SimpleAdapterCustomised.Tag) view.getTag();
 				tag.selected = !tag.selected;
 				Map<String, Object> newEntry = new HashMap<String, Object>();
-				newEntry.put(C.pId, mListProcesses.get(position).get(C.pId));
-				newEntry.put(C.pName, mListProcesses.get(position).get(C.pName));
-				newEntry.put(C.pAppName, mListProcesses.get(position).get(C.pAppName));
-				newEntry.put(C.pPackage, mListProcesses.get(position).get(C.pPackage));
+				newEntry.put(Constans.pId, mListProcesses.get(position).get(Constans.pId));
+				newEntry.put(Constans.pName, mListProcesses.get(position).get(Constans.pName));
+				newEntry.put(Constans.pAppName, mListProcesses.get(position).get(Constans.pAppName));
+				newEntry.put(Constans.pPackage, mListProcesses.get(position).get(Constans.pPackage));
 				if (tag.selected) {
 					mListSelected.add(newEntry);
 				} else {
 					Iterator<Map<String, Object>> i = mListSelected.iterator();
 					while (i.hasNext())
-						if (i.next().get(C.pId).equals(newEntry.get(C.pId)))
+						if (i.next().get(Constans.pId).equals(newEntry.get(Constans.pId)))
 							i.remove();
 				}
 				
-				mListProcesses.get(position).put(C.pSelected, tag.selected);
+				mListProcesses.get(position).put(Constans.pSelected, tag.selected);
 				mSA.notifyDataSetChanged();
 			}
 		});
@@ -209,7 +209,7 @@ public class ActivityProcesses extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (mListSelected.size() != 0) {
-					setResult(1, new Intent(ActivityProcesses.this, ActivityMain.class).putExtra(C.listSelected, (Serializable) mListSelected));
+					setResult(1, new Intent(ActivityProcesses.this, ActivityMain.class).putExtra(Constans.listSelected, (Serializable) mListSelected));
 					finish();
 				} else {
 					Toast.makeText(ActivityProcesses.this, getString(R.string.w_processes_select_some_process), Toast.LENGTH_SHORT).show();
@@ -224,11 +224,11 @@ public class ActivityProcesses extends Activity {
 	
 	private Map<String, Object> mapDataForPlacesList(boolean selected, String pAppName, String pid, String pPackage, String pName) {
 		Map<String, Object> entry = new HashMap<String, Object>();
-		entry.put(C.pSelected, selected);
-		entry.put(C.pAppName, pAppName);
-		entry.put(C.pId, pid);
-		entry.put(C.pPackage, pPackage);
-		entry.put(C.pName, pName);
+		entry.put(Constans.pSelected, selected);
+		entry.put(Constans.pAppName, pAppName);
+		entry.put(Constans.pId, pid);
+		entry.put(Constans.pPackage, pPackage);
+		entry.put(Constans.pName, pName);
 		return entry;
 	}
 	
@@ -239,9 +239,9 @@ public class ActivityProcesses extends Activity {
 	@Override
 	public void onSaveInstanceState(Bundle outState)  {
 		if (mListProcesses.size() != 0)
-			outState.putSerializable(C.listProcesses, (Serializable) mListProcesses);
+			outState.putSerializable(Constans.listProcesses, (Serializable) mListProcesses);
 		if (mListSelected.size() != 0)
-			outState.putSerializable(C.listSelected, (Serializable) mListSelected);
+			outState.putSerializable(Constans.listSelected, (Serializable) mListSelected);
 	}
 	
 	
@@ -271,17 +271,17 @@ public class ActivityProcesses extends Activity {
 				view.setPadding(0, 0, 0, navigationBarHeight);
 			else view.setPadding(0, 0, 0, 0);
 			
-			if ((Boolean) mListProcesses.get(position).get(C.pSelected))
+			if ((Boolean) mListProcesses.get(position).get(Constans.pSelected))
 				tag.l.setBackgroundColor(ActivityProcesses.this.getResources().getColor(R.color.bgProcessessSelected));
 			else tag.l.setBackgroundColor(Color.TRANSPARENT);
 			try {
-				if (mListProcesses.get(position).get(C.pAppName).equals(mListProcesses.get(position).get(C.pName)))
+				if (mListProcesses.get(position).get(Constans.pAppName).equals(mListProcesses.get(position).get(Constans.pName)))
 					tag.iv.setImageDrawable(getDrawable(R.drawable.transparent_pixel));
-				else tag.iv.setImageDrawable(getPackageManager().getApplicationIcon((String) mListProcesses.get(position).get(C.pPackage)));
+				else tag.iv.setImageDrawable(getPackageManager().getApplicationIcon((String) mListProcesses.get(position).get(Constans.pPackage)));
 			} catch (NameNotFoundException e) {
 			}
-			tag.tvPAppName.setText((String) mListProcesses.get(position).get(C.pAppName));
-			tag.tvPName.setText(mListProcesses.get(position).get(C.pName) + " - Pid: " + mListProcesses.get(position).get(C.pId));
+			tag.tvPAppName.setText((String) mListProcesses.get(position).get(Constans.pAppName));
+			tag.tvPName.setText(mListProcesses.get(position).get(Constans.pName) + " - Pid: " + mListProcesses.get(position).get(Constans.pId));
 			
 			return view;
 		}
@@ -301,7 +301,7 @@ public class ActivityProcesses extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		registerReceiver(receiverFinish, new IntentFilter(C.actionFinishActivity));
+		registerReceiver(receiverFinish, new IntentFilter(Constans.actionFinishActivity));
 	}
 	
 	

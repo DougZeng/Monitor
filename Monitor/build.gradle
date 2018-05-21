@@ -22,8 +22,8 @@ android {
         applicationId 'org.doug.monitor'
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 180520
-        versionName "18.5.20"
+        versionCode 180521
+        versionName "18.5.21"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

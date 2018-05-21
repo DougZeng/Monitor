@@ -53,13 +53,13 @@ public class ActivityAbout extends Activity {
 			float sSW = res.getConfiguration().smallestScreenWidthDp;
 			
 			LinearLayout l = (LinearLayout) findViewById(R.id.LParent);
-			int statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(C.sbh, C.dimen, C.android));
+			int statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.sbh, Constans.dimen, Constans.android));
 			int navigationBarHeight = 0;
 			
 			if (!ViewConfiguration.get(this).hasPermanentMenuKey() && !KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
 					&& (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT || sSW > 560)) {
 				getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-				navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(C.nbh, C.dimen, C.android));
+				navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.nbh, Constans.dimen, Constans.android));
 				FrameLayout nb = (FrameLayout) findViewById(R.id.LNavigationBar);
 				nb.setVisibility(View.VISIBLE);
 				((FrameLayout.LayoutParams) nb.getLayoutParams()).height = navigationBarHeight;
@@ -77,7 +77,7 @@ public class ActivityAbout extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(C.marketDetails + getPackageName()))
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constans.marketDetails + getPackageName()))
 							.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
 				} catch (ActivityNotFoundException e) {
 					e.printStackTrace();
@@ -95,7 +95,7 @@ public class ActivityAbout extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		registerReceiver(receiverFinish, new IntentFilter(C.actionFinishActivity));
+		registerReceiver(receiverFinish, new IntentFilter(Constans.actionFinishActivity));
 	}
 
 

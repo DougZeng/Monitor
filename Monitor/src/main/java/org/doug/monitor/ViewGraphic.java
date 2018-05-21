@@ -125,28 +125,28 @@ public class ViewGraphic extends TextureView {
 		if (cpuTotalD)
 			drawLineFloat(cpuTotal, canvas, cpuTotalPaint);
 		if (cpuAMD)
-			if (processesMode == C.processesModeShowCPU)
+			if (processesMode == Constans.processesModeShowCPU)
 				drawLineFloat(cpuAM, canvas, cpuAMPaint);
 			else drawLineInteger(memoryAM, canvas, cpuAMPaint);
 		
 		List<Map<String, Object>> l = mSR.getProcesses();
 		if (l != null && !l.isEmpty())
 			for (int n=0; n<l.size(); ++n) {
-				if ((Boolean) l.get(n).get(C.pSelected)) {
+				if ((Boolean) l.get(n).get(Constans.pSelected)) {
 					if (paints == null)
 						paints = new HashMap<String, Paint>();
-					Paint paint = paints.get(l.get(n).get(C.pId));
+					Paint paint = paints.get(l.get(n).get(Constans.pId));
 					if (paint == null) {
-						paint = getPaint((Integer) l.get(n).get(C.pColour), Paint.Align.CENTER, 12, false, thickParam);
-						paints.put((String) l.get(n).get(C.pId), paint);
+						paint = getPaint((Integer) l.get(n).get(Constans.pColour), Paint.Align.CENTER, 12, false, thickParam);
+						paints.put((String) l.get(n).get(Constans.pId), paint);
 					}
-					if (processesMode == C.processesModeShowCPU) // processesMode==0 CPU usage, processesMode==1 Memory
-						drawLineFloat((List<Float>) l.get(n).get(C.pFinalValue), canvas, paint);
-					else drawLineInteger((List<Integer>) l.get(n).get(C.pTPD), canvas, paint); 
+					if (processesMode == Constans.processesModeShowCPU) // processesMode==0 CPU usage, processesMode==1 Memory
+						drawLineFloat((List<Float>) l.get(n).get(Constans.pFinalValue), canvas, paint);
+					else drawLineInteger((List<Integer>) l.get(n).get(Constans.pTPD), canvas, paint);
 				}
 			}
 		
-		if (graphicMode == C.graphicModeShowMemory) {
+		if (graphicMode == Constans.graphicModeShowMemory) {
 			if (memUsedD)
 				drawLine(memUsed, canvas, memUsedPaint);
 			if (memAvailableD)

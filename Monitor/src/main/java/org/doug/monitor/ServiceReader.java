@@ -57,11 +57,11 @@ public class ServiceReader extends Service {
 	private String[] sa;
 	private List<Float> cpuTotal, cpuAM;
 	private List<Integer> memoryAM;
-	private List<Map<String, Object>> mListSelected; // Integer		 C.pId
-												  // String		 C.pName
-												  // Integer	 C.work
-												  // Integer	 C.workBefore
-												  // List<Sring> C.finalValue
+	private List<Map<String, Object>> mListSelected; // Integer		 Constans.pId
+												  // String		 Constans.pName
+												  // Integer	 Constans.work
+												  // Integer	 Constans.workBefore
+												  // List<Sring> Constans.finalValue
 	private List<String> memUsed, memAvailable, memFree, cached, threshold;
 	private ActivityManager am;
 	private Debug.MemoryInfo[] amMI;
@@ -104,7 +104,7 @@ public class ServiceReader extends Service {
 		
 		
 	};
-	private volatile Thread readThread = new Thread(readRunnable, C.readThread);
+	private volatile Thread readThread = new Thread(readRunnable, Constans.readThread);
 	private BroadcastReceiver receiverStartRecord = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -123,7 +123,7 @@ public class ServiceReader extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-			sendBroadcast(new Intent(C.actionFinishActivity));
+			sendBroadcast(new Intent(Constans.actionFinishActivity));
 			stopSelf();
 		}
 	};
@@ -159,17 +159,17 @@ public class ServiceReader extends Service {
 		amMI = am.getProcessMemoryInfo(new int[]{ pId });
 		mi = new ActivityManager.MemoryInfo();
 		
-		mPrefs = getSharedPreferences(getString(R.string.app_name) + C.prefs, MODE_PRIVATE);
-		intervalRead = mPrefs.getInt(C.intervalRead, C.defaultIntervalRead);
-		intervalUpdate = mPrefs.getInt(C.intervalUpdate, C.defaultIntervalUpdate);
-		intervalWidth = mPrefs.getInt(C.intervalWidth, C.defaultIntervalWidth);
+		mPrefs = getSharedPreferences(getString(R.string.app_name) + Constans.prefs, MODE_PRIVATE);
+		intervalRead = mPrefs.getInt(Constans.intervalRead, Constans.defaultIntervalRead);
+		intervalUpdate = mPrefs.getInt(Constans.intervalUpdate, Constans.defaultIntervalUpdate);
+		intervalWidth = mPrefs.getInt(Constans.intervalWidth, Constans.defaultIntervalWidth);
 		
 		readThread.start();
 		
 //		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(Constants.anotherMonitorEvent));
-		registerReceiver(receiverStartRecord, new IntentFilter(C.actionStartRecord));
-		registerReceiver(receiverStopRecord, new IntentFilter(C.actionStopRecord));
-		registerReceiver(receiverClose, new IntentFilter(C.actionClose));
+		registerReceiver(receiverStartRecord, new IntentFilter(Constans.actionStartRecord));
+		registerReceiver(receiverStopRecord, new IntentFilter(Constans.actionStopRecord));
+		registerReceiver(receiverClose, new IntentFilter(Constans.actionClose));
 		
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		
@@ -178,9 +178,9 @@ public class ServiceReader extends Service {
 //				.addNextIntent(new Intent(this, ActivityMain.class))
 				.addNextIntentWithParentStack(new Intent(this, ActivityMain.class))
 				.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-		PendingIntent pIStartRecord = PendingIntent.getBroadcast(this, 0, new Intent(C.actionStartRecord), PendingIntent.FLAG_UPDATE_CURRENT);
-		PendingIntent pIStopRecord = PendingIntent.getBroadcast(this, 0, new Intent(C.actionStopRecord), PendingIntent.FLAG_UPDATE_CURRENT);
-		PendingIntent pIClose = PendingIntent.getBroadcast(this, 0, new Intent(C.actionClose), PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pIStartRecord = PendingIntent.getBroadcast(this, 0, new Intent(Constans.actionStartRecord), PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pIStopRecord = PendingIntent.getBroadcast(this, 0, new Intent(Constans.actionStopRecord), PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pIClose = PendingIntent.getBroadcast(this, 0, new Intent(Constans.actionClose), PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		mNotificationRead = new NotificationCompat.Builder(this)
 				.setContentTitle(getString(R.string.app_name))
@@ -272,21 +272,21 @@ public class ServiceReader extends Service {
 					threshold.remove(threshold.size() - 1);
 				}
 				if (mListSelected != null && !mListSelected.isEmpty()) {
-					List<Integer> l = (List<Integer>) (mListSelected.get(0)).get(C.pFinalValue);
+					List<Integer> l = (List<Integer>) (mListSelected.get(0)).get(Constans.pFinalValue);
 					if (l != null && l.size() >= maxSamples)
 						for (Map<String, Object> m : mListSelected) {
-							((List<Integer>) m.get(C.pFinalValue)).remove(l.size() - 1);
-							((List<Integer>) m.get(C.pTPD)).remove(((List<Integer>) m.get(C.pTPD)).size() - 1);
+							((List<Integer>) m.get(Constans.pFinalValue)).remove(l.size() - 1);
+							((List<Integer>) m.get(Constans.pTPD)).remove(((List<Integer>) m.get(Constans.pTPD)).size() - 1);
 						}
 				}
 				if (mListSelected != null && !mListSelected.isEmpty()) {
 					for (Map<String, Object> m : mListSelected) {
-						List<Integer> l = (List<Integer>) m.get(C.pFinalValue);
+						List<Integer> l = (List<Integer>) m.get(Constans.pFinalValue);
 						if (l == null)
 							break;
 						while (l.size() >= maxSamples)
 							l.remove(l.size() - 1);
-						l = (List<Integer>) m.get(C.pTPD);
+						l = (List<Integer>) m.get(Constans.pTPD);
 						while (l.size() >= maxSamples)
 							l.remove(l.size() - 1);
 					}
@@ -345,18 +345,18 @@ public class ServiceReader extends Service {
 					int n=0;
 					for (Map<String, Object> p : mListSelected) {
 						try {
-							if (p.get(C.pDead) == null) {
-								reader = new BufferedReader(new FileReader("/proc/" + p.get(C.pId) + "/stat"));
-								arrayPIds[n] = Integer.valueOf((String) p.get(C.pId));
+							if (p.get(Constans.pDead) == null) {
+								reader = new BufferedReader(new FileReader("/proc/" + p.get(Constans.pId) + "/stat"));
+								arrayPIds[n] = Integer.valueOf((String) p.get(Constans.pId));
 								++n;
 								sa = reader.readLine().split("[ ]+", 18);
-								p.put(C.work, (float) Long.parseLong(sa[13]) + Long.parseLong(sa[14]) + Long.parseLong(sa[15]) + Long.parseLong(sa[16]));
+								p.put(Constans.work, (float) Long.parseLong(sa[13]) + Long.parseLong(sa[14]) + Long.parseLong(sa[15]) + Long.parseLong(sa[16]));
 								reader.close();
 							}
 						} catch (FileNotFoundException e) {
-							p.put(C.pDead, Boolean.TRUE);
-							Intent intent = new Intent(C.actionDeadProcess);
-							intent.putExtra(C.process, (Serializable) p);
+							p.put(Constans.pDead, Boolean.TRUE);
+							Intent intent = new Intent(Constans.actionDeadProcess);
+							intent.putExtra(Constans.process, (Serializable) p);
 							sendBroadcast(intent);
 						}
 					}
@@ -365,12 +365,12 @@ public class ServiceReader extends Service {
 				MemoryInfo[] mip = am.getProcessMemoryInfo(arrayPIds);
 				int n = 0;
 				for (Map<String, Object> entry : mListSelected) {
-					List<Integer> l = (List<Integer>) entry.get(C.pTPD);
+					List<Integer> l = (List<Integer>) entry.get(Constans.pTPD);
 					if (l == null) {
 						l = new ArrayList<Integer>();
-						entry.put(C.pTPD, l);
+						entry.put(Constans.pTPD, l);
 					}
-					if (entry.get(C.pDead) == null) {
+					if (entry.get(Constans.pDead) == null) {
 //						if (mip[n].getTotalPrivateDirty() !=0
 //								&& mip[n].getTotalPss() != 0
 //								&& mip[n].getTotalSharedDirty() != 0) // To avoid dead processes
@@ -406,17 +406,17 @@ public class ServiceReader extends Service {
 					
 					synchronized (mListSelected) {
 						for (Map<String, Object> p : mListSelected) {
-							if (p.get(C.workBefore) == null)
+							if (p.get(Constans.workBefore) == null)
 								break;
-							l = (List<Float>) p.get(C.pFinalValue);
+							l = (List<Float>) p.get(Constans.pFinalValue);
 							if (l == null) {
 								l = new ArrayList<Float>();
-								p.put(C.pFinalValue, l);
+								p.put(Constans.pFinalValue, l);
 							}
 							while (l.size() >= maxSamples)
 								l.remove(l.size() - 1);
 							
-							workPT = (int) ((Float) p.get(C.work) - (Float) p.get(C.workBefore));
+							workPT = (int) ((Float) p.get(Constans.work) - (Float) p.get(Constans.workBefore));
 							l.add(0, restrictPercentage(workPT * 100 / (float) totalT));
 						}
 					}
@@ -429,7 +429,7 @@ public class ServiceReader extends Service {
 			
 			if (mListSelected != null && !mListSelected.isEmpty())
 				for (Map<String, Object> p : mListSelected)
-					p.put(C.workBefore, p.get(C.work));
+					p.put(Constans.workBefore, p.get(Constans.work));
 			
 			reader.close();
 			
@@ -484,8 +484,8 @@ public class ServiceReader extends Service {
 						.append("\nTotal CPU usage (%),AnotherMonitor (Pid ").append(Process.myPid()).append(") CPU usage (%),AnotherMonitor Memory (kB)");
 				if (mListSelected != null && !mListSelected.isEmpty())
 					for (Map<String, Object> p : mListSelected)
-						sb.append(",").append(p.get(C.pAppName)).append(" (Pid ").append(p.get(C.pId)).append(") CPU usage (%)")
-						  .append(",").append(p.get(C.pAppName)).append(" Memory (kB)");
+						sb.append(",").append(p.get(Constans.pAppName)).append(" (Pid ").append(p.get(Constans.pId)).append(") CPU usage (%)")
+						  .append(",").append(p.get(Constans.pAppName)).append(" Memory (kB)");
 				
 				sb.append(",,Memory used (kB),Memory available (MemFree+Cached) (kB),MemFree (kB),Cached (kB),Threshold (kB)");
 				
@@ -500,10 +500,10 @@ public class ServiceReader extends Service {
 					.append(",").append(memoryAM.get(0));
 			if (mListSelected != null && !mListSelected.isEmpty())
 				for (Map<String, Object> p : mListSelected) {
-					if (p.get(C.pDead) != null)
+					if (p.get(Constans.pDead) != null)
 						sb.append(",DEAD,DEAD");
-					else sb.append(",").append(((List<Integer>) p.get(C.pFinalValue)).get(0))
-							.append(",").append(((List<Integer>) p.get(C.pTPD)).get(0));
+					else sb.append(",").append(((List<Integer>) p.get(Constans.pFinalValue)).get(0))
+							.append(",").append(((List<Integer>) p.get(Constans.pTPD)).get(0));
 				}
 			sb.append(",")
 					.append(",").append(memUsed.get(0))
@@ -528,12 +528,12 @@ public class ServiceReader extends Service {
 			return;
 		}
 		recording = true;
-		sendBroadcast(new Intent(C.actionSetIconRecord));
+		sendBroadcast(new Intent(Constans.actionSetIconRecord));
 	}
 	
 	void stopRecord() {
 		recording = false;
-		sendBroadcast(new Intent(C.actionSetIconRecord));
+		sendBroadcast(new Intent(Constans.actionSetIconRecord));
 		try {
 			mW.flush();
 			mW.close();
@@ -569,7 +569,7 @@ public class ServiceReader extends Service {
 			stopRecord();
 		else {
 			recording = false;
-			sendBroadcast(new Intent(C.actionSetIconRecord));
+			sendBroadcast(new Intent(Constans.actionSetIconRecord));
 			
 			// http://stackoverflow.com/questions/3875184/cant-create-handler-inside-thread-that-has-not-called-looper-prepare
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -618,11 +618,11 @@ public class ServiceReader extends Service {
 	}
 	
 	void addProcess(Map<String, Object> process) {
-		// Integer	   C.pId
-		// String	   C.pName
-		// Integer	   C.work
-		// Integer	   C.workBefore
-		// List<Sring> C.finalValue
+		// Integer	   Constans.pId
+		// String	   Constans.pName
+		// Integer	   Constans.work
+		// Integer	   Constans.workBefore
+		// List<Sring> Constans.finalValue
 		if (mListSelected == null)
 			mListSelected = Collections.synchronizedList(new ArrayList<Map<String, Object>>());
 		mListSelected.add(process);
@@ -632,9 +632,9 @@ public class ServiceReader extends Service {
 		synchronized (mListSelected) {
 			Iterator<Map<String, Object>> i = mListSelected.iterator();
 			while (i.hasNext())
-				if (i.next().get(C.pId).equals(process.get(C.pId))) {
+				if (i.next().get(Constans.pId).equals(process.get(Constans.pId))) {
 					i.remove();
-					Log.i(getString(R.string.w_processes_dead_notification), (String) process.get(C.pName));
+					Log.i(getString(R.string.w_processes_dead_notification), (String) process.get(Constans.pName));
 				}
 		}
 	}

@@ -99,7 +99,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 				mHandlerVG.post(drawRunnableGraphic);
 				
 				setTextLabelCPU(null, mTVCPUTotalP, mSR.getCPUTotalP());
-				if (processesMode == C.processesModeShowCPU)
+				if (processesMode == Constans.processesModeShowCPU)
 					setTextLabelCPU(null, mTVCPUAMP, mSR.getCPUAMP());
 				else setTextLabelCPU(null, mTVCPUAMP, null, mSR.getMemoryAM());
 				
@@ -173,7 +173,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			
 			setIconRecording();
 			
-			mTVMemTotal.setText(mFormat.format(mSR.getMemTotal()) + C.kB);
+			mTVMemTotal.setText(mFormat.format(mSR.getMemTotal()) + Constans.kB);
 			
 			switchParameter(cpuTotal, mLCPUTotal);
 			switchParameter(cpuAM, mLCPUAM);
@@ -190,7 +190,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			// When on ActivityProcesses the screen is rotated, ActivityMain is destroyed and back is pressed from ActivityProcesses
 			// mSR isn't ready before onActivityResult() is called. So the Intent is saved till mSR is ready.
 			if (tempIntent !=null) {
-				tempIntent.putExtra(C.screenRotated, true);
+				tempIntent.putExtra(Constans.screenRotated, true);
 				onActivityResult(1, 1, tempIntent);
 				tempIntent = null;
 			} else onActivityResult(1, 1, null);
@@ -230,7 +230,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 		@SuppressWarnings("unchecked")
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			switchParameterForProcess((Map<String, Object>) intent.getSerializableExtra(C.process));
+			switchParameterForProcess((Map<String, Object>) intent.getSerializableExtra(Constans.process));
 		}
 	}, receiverFinish = new BroadcastReceiver() {
 		
@@ -252,19 +252,19 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 		startService(new Intent(this, ServiceReader.class));
 		setContentView(R.layout.activity_main);
 		
-		mPrefs = getSharedPreferences(getString(R.string.app_name) + C.prefs, MODE_PRIVATE);
-		intervalRead = mPrefs.getInt(C.intervalRead, C.defaultIntervalUpdate);
-		intervalUpdate = mPrefs.getInt(C.intervalUpdate, C.defaultIntervalUpdate);
-		intervalWidth = mPrefs.getInt(C.intervalWidth, C.defaultIntervalWidth);
+		mPrefs = getSharedPreferences(getString(R.string.app_name) + Constans.prefs, MODE_PRIVATE);
+		intervalRead = mPrefs.getInt(Constans.intervalRead, Constans.defaultIntervalUpdate);
+		intervalUpdate = mPrefs.getInt(Constans.intervalUpdate, Constans.defaultIntervalUpdate);
+		intervalWidth = mPrefs.getInt(Constans.intervalWidth, Constans.defaultIntervalWidth);
 		
-		cpuTotal = mPrefs.getBoolean(C.cpuTotal, true);
-		cpuAM = mPrefs.getBoolean(C.cpuAM, true);
+		cpuTotal = mPrefs.getBoolean(Constans.cpuTotal, true);
+		cpuAM = mPrefs.getBoolean(Constans.cpuAM, true);
 		
-		memUsed = mPrefs.getBoolean(C.memUsed, true);
-		memAvailable = mPrefs.getBoolean(C.memAvailable, true);
-		memFree = mPrefs.getBoolean(C.memFree, false);
-		cached = mPrefs.getBoolean(C.cached, false);
-		threshold = mPrefs.getBoolean(C.threshold, true);
+		memUsed = mPrefs.getBoolean(Constans.memUsed, true);
+		memAvailable = mPrefs.getBoolean(Constans.memAvailable, true);
+		memFree = mPrefs.getBoolean(Constans.memFree, false);
+		cached = mPrefs.getBoolean(Constans.cached, false);
+		threshold = mPrefs.getBoolean(Constans.threshold, true);
 		
 		res = getResources();
 		sD = res.getDisplayMetrics().density;
@@ -272,38 +272,38 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 //		sHeight = res.getDisplayMetrics().heightPixels;
 		sD = res.getDisplayMetrics().density;
 		orientation = res.getConfiguration().orientation;
-		statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(C.sbh, C.dimen, C.android));
+		statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.sbh, Constans.dimen, Constans.android));
 		
 		final SeekBar mSBWidth = (SeekBar) findViewById(R.id.SBIntervalWidth);
-		if (savedInstanceState != null && !savedInstanceState.isEmpty() && savedInstanceState.getInt(C.orientation) != orientation)
+		if (savedInstanceState != null && !savedInstanceState.isEmpty() && savedInstanceState.getInt(Constans.orientation) != orientation)
 			orientationChanged = true;
 		
 		
 		mVG = (ViewGraphic) findViewById(R.id.ANGraphic);
 		
-		graphicMode = mPrefs.getInt(C.graphicMode, C.graphicModeShowMemory);
+		graphicMode = mPrefs.getInt(Constans.graphicMode, Constans.graphicModeShowMemory);
 		mVG.setGraphicMode(graphicMode);
 		mBHide = (ToggleButton) findViewById(R.id.BHideMemory);
 		mBHide.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				graphicMode = graphicMode == C.graphicModeShowMemory ? C.graphicModeHideMemory : C.graphicModeShowMemory;
-				mPrefs.edit().putInt(C.graphicMode, graphicMode).apply();
+				graphicMode = graphicMode == Constans.graphicModeShowMemory ? Constans.graphicModeHideMemory : Constans.graphicModeShowMemory;
+				mPrefs.edit().putInt(Constans.graphicMode, graphicMode).apply();
 				mVG.setGraphicMode(graphicMode);
-				mBHide.setChecked(graphicMode == C.graphicModeShowMemory ? false : true);
+				mBHide.setChecked(graphicMode == Constans.graphicModeShowMemory ? false : true);
 				mHandlerVG.post(drawRunnableGraphic);
 			}
 		});
-		mBHide.setChecked(graphicMode == C.graphicModeShowMemory ? false : true);
+		mBHide.setChecked(graphicMode == Constans.graphicModeShowMemory ? false : true);
 		
-		processesMode = mPrefs.getInt(C.processesMode, C.processesModeShowCPU);
+		processesMode = mPrefs.getInt(Constans.processesMode, Constans.processesModeShowCPU);
 		mVG.setProcessesMode(processesMode);
 		mBMemory = (Button) findViewById(R.id.BMemory);
 		mBMemory.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				processesMode = processesMode == C.processesModeShowCPU ? C.processesModeShowMemory : C.processesModeShowCPU;
-				mPrefs.edit().putInt(C.processesMode, processesMode).apply();
+				processesMode = processesMode == Constans.processesModeShowCPU ? Constans.processesModeShowMemory : Constans.processesModeShowCPU;
+				mPrefs.edit().putInt(Constans.processesMode, processesMode).apply();
 				mBMemory.setText(processesMode == 0 ? getString(R.string.w_main_memory) : getString(R.string.p_cpuusage));
 				mVG.setProcessesMode(processesMode);
 				mHandlerVG.post(drawRunnableGraphic);
@@ -325,7 +325,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			if (!ViewConfiguration.get(this).hasPermanentMenuKey() && !KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME)
 					&& (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT || sSW > 560)) {
 				getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-				navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(C.nbh, C.dimen, C.android));
+				navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.nbh, Constans.dimen, Constans.android));
 				if (navigationBarHeight == 0)
 					navigationBarHeight = (int) (48*sD);
 				
@@ -439,7 +439,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 		mLProcessContainer = (LinearLayout) findViewById(R.id.LProcessContainer);
 		
 		mLCPUTotal = (LinearLayout) findViewById(R.id.LCPUTotal);
-		mLCPUTotal.setTag(C.cpuTotal);
+		mLCPUTotal.setTag(Constans.cpuTotal);
 		mLCPUTotal.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -447,7 +447,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			}
 		});
 		mLCPUAM = (LinearLayout) findViewById(R.id.LCPUAM);
-		mLCPUAM.setTag(C.cpuAM);
+		mLCPUAM.setTag(Constans.cpuAM);
 		mLCPUAM.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -457,7 +457,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 		((TextView) ((LinearLayout) mLCPUAM.getChildAt(2)).getChildAt(1)).setText("Pid: " + Process.myPid());
 		
 		mLMemUsed = (LinearLayout) findViewById(R.id.LMemUsed);
-		mLMemUsed.setTag(C.memUsed);
+		mLMemUsed.setTag(Constans.memUsed);
 		mLMemUsed.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -465,7 +465,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			}
 		});
 		mLMemAvailable = (LinearLayout) findViewById(R.id.LMemAvailable);
-		mLMemAvailable.setTag(C.memAvailable);
+		mLMemAvailable.setTag(Constans.memAvailable);
 		mLMemAvailable.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -473,7 +473,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			}
 		});
 		mLMemFree = (LinearLayout) findViewById(R.id.LMemFree);
-		mLMemFree.setTag(C.memFree);
+		mLMemFree.setTag(Constans.memFree);
 		mLMemFree.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -481,7 +481,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			}
 		});
 		mLCached = (LinearLayout) findViewById(R.id.LCached);
-		mLCached.setTag(C.cached);
+		mLCached.setTag(Constans.cached);
 		mLCached.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -489,7 +489,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			}
 		});
 		mLThreshold = (LinearLayout) findViewById(R.id.LThreshold);
-		mLThreshold.setTag(C.threshold);
+		mLThreshold.setTag(Constans.threshold);
 		mLThreshold.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -548,7 +548,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			@Override
 			public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
 /*				if (drawThread == null) {
-					drawThread = new Thread(drawRunnable3, C.drawThread);
+					drawThread = new Thread(drawRunnable3, Constans.drawThread);
 				}
 				drawThread.start();*/
 /*				mVG.getSurfaceTexture().setOnFrameAvailableListener( new SurfaceTexture.OnFrameAvailableListener() {
@@ -600,7 +600,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(ActivityMain.this, ActivityProcesses.class);
-				i.putExtra(C.listSelected, (Serializable) mListSelected);
+				i.putExtra(Constans.listSelected, (Serializable) mListSelected);
 				startActivityForResult(i, 1);
 			}
 		});
@@ -771,8 +771,8 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 					
 					if (mListSelected != null && !mListSelected.isEmpty())
 						for (Map<String, Object> process : mListSelected) {
-							process.put(C.pFinalValue, new ArrayList<Float>());
-							process.put(C.pTPD, new ArrayList<Integer>());
+							process.put(Constans.pFinalValue, new ArrayList<Float>());
+							process.put(Constans.pTPD, new ArrayList<Integer>());
 						}
 					
 					mSR.getMemUsed().clear();
@@ -792,23 +792,23 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 				mHandler.removeCallbacks(drawRunnable);
 				mHandler.post(drawRunnable);
 				mPrefs.edit()
-						.putInt(C.intervalRead, intervalRead)
-						.putInt(C.intervalUpdate, intervalUpdate)
-						.putInt(C.intervalWidth, intervalWidth)
+						.putInt(Constans.intervalRead, intervalRead)
+						.putInt(Constans.intervalUpdate, intervalUpdate)
+						.putInt(Constans.intervalWidth, intervalWidth)
 						.apply();
 			}
 		});
 		
 		if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-			ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, C.storagePermission);
+			ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, Constans.storagePermission);
 		
 		if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-			processesMode = savedInstanceState.getInt(C.processesMode);
-			mBMemory.setText(processesMode == C.processesModeShowCPU ? getString(R.string.w_main_memory) : getString(R.string.p_cpuusage));
+			processesMode = savedInstanceState.getInt(Constans.processesMode);
+			mBMemory.setText(processesMode == Constans.processesModeShowCPU ? getString(R.string.w_main_memory) : getString(R.string.p_cpuusage));
 			mVG.setProcessesMode(processesMode);
 			
-			canvasLocked = savedInstanceState.getBoolean(C.canvasLocked);
-			settingsShown = savedInstanceState.getBoolean(C.settingsShown);
+			canvasLocked = savedInstanceState.getBoolean(Constans.canvasLocked);
+			settingsShown = savedInstanceState.getBoolean(Constans.settingsShown);
 			if (settingsShown)
 				mLSettings.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 					@Override
@@ -817,7 +817,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 						mLSettings.getLayoutParams().height = settingsHeight;
 					}
 				});
-			if (savedInstanceState.getBoolean(C.menuShown))
+			if (savedInstanceState.getBoolean(Constans.menuShown))
 				mLTopBar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 					@Override
 					public void onGlobalLayout() {
@@ -828,8 +828,8 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 		}
 		
 //		if (true) {
-		if (mPrefs.getBoolean(C.welcome, true)) {
-			mPrefs.edit().putLong(C.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(C.europeLondon)).getTimeInMillis()).apply();
+		if (mPrefs.getBoolean(Constans.welcome, true)) {
+			mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
 			ViewStub v = (ViewStub) findViewById(R.id.VSWelcome);
 			if (v != null) { // This is to avoid a null pointer when the second time this code is executed (findViewById() returns the view only once)
 				mLWelcome = (LinearLayout) v.inflate();
@@ -842,7 +842,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 				(mLWelcome.findViewById(R.id.BHint)).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						mPrefs.edit().putBoolean(C.welcome, false).apply();
+						mPrefs.edit().putBoolean(Constans.welcome, false).apply();
 						mLWelcome.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
 							@Override
 							public void onAnimationEnd(Animator animation) {
@@ -863,14 +863,14 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			}
 		}
 		
-		long time = Calendar.getInstance(TimeZone.getTimeZone(C.europeLondon)).getTimeInMillis();
+		long time = Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis();
 		
 //		if (true) {
-		if (((float) (time - mPrefs.getLong(C.welcomeDate, 1)) / (24 * 60 * 60 * 1000) > 4
-				&& mPrefs.getBoolean(C.feedbackFirstTime, true))
-				|| ((float) (time - mPrefs.getLong(C.welcomeDate, 1)) / (24 * 60 * 60 * 1000) > 90)
-				&& !mPrefs.getBoolean(C.feedbackDone, false)) {
-			mPrefs.edit().putBoolean(C.feedbackFirstTime, false).apply();
+		if (((float) (time - mPrefs.getLong(Constans.welcomeDate, 1)) / (24 * 60 * 60 * 1000) > 4
+				&& mPrefs.getBoolean(Constans.feedbackFirstTime, true))
+				|| ((float) (time - mPrefs.getLong(Constans.welcomeDate, 1)) / (24 * 60 * 60 * 1000) > 90)
+				&& !mPrefs.getBoolean(Constans.feedbackDone, false)) {
+			mPrefs.edit().putBoolean(Constans.feedbackFirstTime, false).apply();
 			ViewStub v = (ViewStub) findViewById(R.id.VSFeedback);
 			if (v != null) { // This is to avoid a null pointer when the second time this code is executed (findViewById() returns the view only once)
 				mLFeedback = (LinearLayout) v.inflate();
@@ -883,9 +883,9 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 				(mLFeedback.findViewById(R.id.BFeedbackYes)).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						mPrefs.edit().putBoolean(C.feedbackDone, true).apply();
+						mPrefs.edit().putBoolean(Constans.feedbackDone, true).apply();
 						try {
-							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(C.marketDetails + getPackageName()))
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constans.marketDetails + getPackageName()))
 									.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
 						} catch (ActivityNotFoundException e) {
 							e.printStackTrace();
@@ -904,7 +904,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 				(mLFeedback.findViewById(R.id.BFeedbackDone)).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						mPrefs.edit().putBoolean(C.feedbackDone, true).apply();
+						mPrefs.edit().putBoolean(Constans.feedbackDone, true).apply();
 						Toast.makeText(ActivityMain.this, getString(R.string.w_main_feedback_done_thanks), Toast.LENGTH_SHORT).show();
 						mLFeedback.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
 							@Override
@@ -925,7 +925,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 								mLFeedback = null;
 							}
 						}).setStartDelay(0).alpha(0).translationYBy(-15*sD);
-						mPrefs.edit().putLong(C.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(C.europeLondon)).getTimeInMillis()).apply();
+						mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
 						Toast.makeText(ActivityMain.this, getString(R.string.w_main_feedback_no_remind), Toast.LENGTH_LONG).show();
 					}
 				});
@@ -998,14 +998,14 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			return;
 		
 		mPrefs.edit()
-				.putBoolean(C.cpuTotal, cpuTotal)
-				.putBoolean(C.cpuAM, cpuAM)
+				.putBoolean(Constans.cpuTotal, cpuTotal)
+				.putBoolean(Constans.cpuAM, cpuAM)
 				
-				.putBoolean(C.memUsed, memUsed)
-				.putBoolean(C.memAvailable, memAvailable)
-				.putBoolean(C.memFree, memFree)
-				.putBoolean(C.cached, cached)
-				.putBoolean(C.threshold, threshold)
+				.putBoolean(Constans.memUsed, memUsed)
+				.putBoolean(Constans.memAvailable, memAvailable)
+				.putBoolean(Constans.memFree, memFree)
+				.putBoolean(Constans.cached, cached)
+				.putBoolean(Constans.threshold, threshold)
 				
 				.apply();
 		
@@ -1028,21 +1028,21 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 		LinearLayout l = null;
 		for (int n=0; n<mLProcessContainer.getChildCount(); ++n) {
 			l = (LinearLayout) mLProcessContainer.getChildAt(n);
-			if (((Map<String, Object>) l.getTag()).get(C.pId).equals(process.get(C.pId)))
+			if (((Map<String, Object>) l.getTag()).get(Constans.pId).equals(process.get(Constans.pId)))
 				break;
 		}
 		ImageView iv = (ImageView) l.getChildAt(0);
 		
-		if (process.get(C.pDead) != null) {
+		if (process.get(Constans.pDead) != null) {
 			((TextView) l.findViewById(R.id.TVpPercentage)).setText(getString(R.string.w_processes_dead));
 			l.findViewById(R.id.TVpName).setAlpha(0.2f);
 			l.findViewById(R.id.TVpAbsolute).setVisibility(View.INVISIBLE);
 			l.getChildAt(1).setAlpha(0.3f);
 		}
 		
-		if ((Boolean) process.get(C.pSelected)) {
+		if ((Boolean) process.get(Constans.pSelected)) {
 			iv.setImageResource(R.drawable.icon_play);
-			if (process.get(C.pDead) == null)
+			if (process.get(Constans.pDead) == null)
 				setTextLabelCPUProcess(l);
 		} else {
 			iv.setImageResource(R.drawable.icon_pause);
@@ -1057,11 +1057,11 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	
 	private void setTextLabelCPU(TextView absolute, TextView percent, List<Float> values, @SuppressWarnings("unchecked") List<Integer>... valuesInteger) {
 		if (valuesInteger.length == 1) {
-			percent.setText(mFormatPercent.format(valuesInteger[0].get(0) * 100 / (float) mSR.getMemTotal()) + C.percent);
+			percent.setText(mFormatPercent.format(valuesInteger[0].get(0) * 100 / (float) mSR.getMemTotal()) + Constans.percent);
 			mTVMemoryAM.setVisibility(View.VISIBLE);
-			mTVMemoryAM.setText(mFormat.format(valuesInteger[0].get(0)) + C.kB);
+			mTVMemoryAM.setText(mFormat.format(valuesInteger[0].get(0)) + Constans.kB);
 		} else if (!values.isEmpty()) {
-			percent.setText(mFormatPercent.format(values.get(0)) + C.percent);
+			percent.setText(mFormatPercent.format(values.get(0)) + Constans.percent);
 			mTVMemoryAM.setVisibility(View.INVISIBLE);
 		}
 	}
@@ -1072,8 +1072,8 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	
 	private void setTextLabelMemory(TextView absolute, TextView percent, List<String> values) {
 		if (!values.isEmpty()) {
-			absolute.setText(mFormat.format(Integer.parseInt(values.get(0))) + C.kB);
-			percent.setText(mFormatPercent.format(Integer.parseInt(values.get(0)) * 100 / (float) mSR.getMemTotal()) + C.percent);
+			absolute.setText(mFormat.format(Integer.parseInt(values.get(0))) + Constans.kB);
+			percent.setText(mFormatPercent.format(Integer.parseInt(values.get(0)) * 100 / (float) mSR.getMemTotal()) + Constans.percent);
 		}
 	}
 	
@@ -1085,12 +1085,12 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	private void setTextLabelCPUProcess(LinearLayout l) {
 		Map<String, Object> entry = (Map<String, Object>) l.getTag();
 		if (entry != null
-				&& entry.get(C.pFinalValue) != null && ((List<String>) entry.get(C.pFinalValue)).size() != 0
-				&& entry.get(C.pTPD) != null && !((List<String>) entry.get(C.pTPD)).isEmpty()
-				&& entry.get(C.pDead) == null)
-			if (processesMode == C.processesModeShowCPU)
-				((TextView) l.findViewById(R.id.TVpPercentage)).setText(mFormatPercent.format(((List<String>) entry.get(C.pFinalValue)).get(0)) + C.percent);
-			else ((TextView) l.findViewById(R.id.TVpPercentage)).setText(mFormatPercent.format(((List<Integer>) entry.get(C.pTPD)).get(0) * 100 / (float) mSR.getMemTotal()) + C.percent);
+				&& entry.get(Constans.pFinalValue) != null && ((List<String>) entry.get(Constans.pFinalValue)).size() != 0
+				&& entry.get(Constans.pTPD) != null && !((List<String>) entry.get(Constans.pTPD)).isEmpty()
+				&& entry.get(Constans.pDead) == null)
+			if (processesMode == Constans.processesModeShowCPU)
+				((TextView) l.findViewById(R.id.TVpPercentage)).setText(mFormatPercent.format(((List<String>) entry.get(Constans.pFinalValue)).get(0)) + Constans.percent);
+			else ((TextView) l.findViewById(R.id.TVpPercentage)).setText(mFormatPercent.format(((List<Integer>) entry.get(Constans.pTPD)).get(0) * 100 / (float) mSR.getMemTotal()) + Constans.percent);
 	}
 	
 	
@@ -1100,15 +1100,15 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	@SuppressWarnings("unchecked")
 	private void setTextLabelMemoryProcesses(LinearLayout l) {
 		TextView tv = (TextView) l.findViewById(R.id.TVpAbsolute);
-		if (processesMode == C.processesModeShowCPU)
+		if (processesMode == Constans.processesModeShowCPU)
 			tv.setVisibility(View.INVISIBLE);
 		else {
 			Map<String, Object> entry = (Map<String, Object>) l.getTag();
 			if (entry != null
-					&& entry.get(C.pTPD) != null && !((List<String>) entry.get(C.pTPD)).isEmpty()
-					&& entry.get(C.pDead) == null) {
+					&& entry.get(Constans.pTPD) != null && !((List<String>) entry.get(Constans.pTPD)).isEmpty()
+					&& entry.get(Constans.pDead) == null) {
 				tv.setVisibility(View.VISIBLE);
-				tv.setText(mFormat.format(((List<String>) entry.get(C.pTPD)).get(0)) + C.kB);
+				tv.setText(mFormat.format(((List<String>) entry.get(Constans.pTPD)).get(0)) + Constans.kB);
 			}
 		}
 	}
@@ -1167,17 +1167,17 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 		if (requestCode == 1 && resultCode == 1) {
 			// List
 				// Map
-					// Integer	   C.pId
-					// String	   C.pName
-					// Integer	   C.work
-					// Integer	   C.workBefore
-					// List<Sring> C.finalValue
-					// Boolean	   C.pDead
+					// Integer	   Constans.pId
+					// String	   Constans.pName
+					// Integer	   Constans.work
+					// Integer	   Constans.workBefore
+					// List<Sring> Constans.finalValue
+					// Boolean	   Constans.pDead
 					
-					// Boolean	   C.pCheckBox
+					// Boolean	   Constans.pCheckBox
 			List<Map<String, Object>> mListSelectedProv = null;
 			if (data != null) {
-				mListSelectedProv = (List<Map<String, Object>>) data.getSerializableExtra(C.listSelected);
+				mListSelectedProv = (List<Map<String, Object>>) data.getSerializableExtra(Constans.listSelected);
 				if (mListSelectedProv == null)
 					return;
 				
@@ -1189,13 +1189,13 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 				}
 				
 				for(Map<String, Object> process : mListSelectedProv) {
-					process.put(C.pColour, getColourForProcess(mSR.getProcesses() != null ? mSR.getProcesses().size() : 0));
+					process.put(Constans.pColour, getColourForProcess(mSR.getProcesses() != null ? mSR.getProcesses().size() : 0));
 					mSR.addProcess(process);
 				}
 				
 				mListSelected = mSR.getProcesses();
 				
-				if (data.getBooleanExtra(C.screenRotated, false))
+				if (data.getBooleanExtra(Constans.screenRotated, false))
 					mListSelectedProv = mListSelected;
 				
 			} else {
@@ -1211,8 +1211,8 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			
 			synchronized (mListSelected) {
 				for (final Map<String, Object> process : mListSelectedProv) {
-					if (process.get(C.pSelected) == null)
-						process.put(C.pSelected, Boolean.TRUE);
+					if (process.get(Constans.pSelected) == null)
+						process.put(Constans.pSelected, Boolean.TRUE);
 					
 					final LinearLayout l = (LinearLayout) getLayoutInflater().inflate(R.layout.layer_process_entry, null);
 					l.setTag(process);
@@ -1230,20 +1230,20 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 					l.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Boolean b = (Boolean) process.get(C.pSelected);
-							process.put(C.pSelected, !b);
+							Boolean b = (Boolean) process.get(Constans.pSelected);
+							process.put(Constans.pSelected, !b);
 							switchParameterForProcess(process);
 							
 							/*Intent intent = new Intent();
 							intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-							intent.setData(Uri.parse("package:" + (String) process.get(C.pPackage)));
+							intent.setData(Uri.parse("package:" + (String) process.get(Constans.pPackage)));
 							startActivity(intent);*/
 							
 							/*// http://stackoverflow.com/questions/2780102/open-another-application-from-your-own-intent
 							Intent i;
 							PackageManager manager = getPackageManager();
 							try {
-								i = manager.getLaunchIntentForPackage((String) process.get(C.pPackage));
+								i = manager.getLaunchIntentForPackage((String) process.get(Constans.pPackage));
 								if (i == null)
 									throw new PackageManager.NameNotFoundException();
 								i.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -1255,21 +1255,21 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 					
 					Drawable d = null;
 					try {
-						d = getPackageManager().getApplicationIcon((String) process.get(C.pPackage));
+						d = getPackageManager().getApplicationIcon((String) process.get(Constans.pPackage));
 					} catch (NameNotFoundException e) {
 					}
 					
 					ImageView pIcon = (ImageView) l.getChildAt(1);
 					pIcon.setImageDrawable(d);
 					
-					int colour = (Integer) process.get(C.pColour);
+					int colour = (Integer) process.get(Constans.pColour);
 					
 					TextView pName = (TextView) l.findViewById(R.id.TVpAppName);
-					pName.setText((String) process.get(C.pAppName));
+					pName.setText((String) process.get(Constans.pAppName));
 					pName.setTextColor(colour);
 					
 					TextView pId = (TextView) l.findViewById(R.id.TVpName);
-					pId.setText("Pid: " + process.get(C.pId));
+					pId.setText("Pid: " + process.get(Constans.pId));
 					
 					TextView pUsage = (TextView) l.findViewById(R.id.TVpPercentage);
 					pUsage.setTextColor(colour);
@@ -1278,7 +1278,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 					switchParameterForProcess(process);
 					
 //					if (true) {
-					if (mPrefs.getBoolean(C.firstTimeProcesses, true)) {
+					if (mPrefs.getBoolean(Constans.firstTimeProcesses, true)) {
 						ViewStub v = (ViewStub) findViewById(R.id.VSFirstTimeProcesses);
 						if (v != null) { // This is to avoid a null pointer when the second time this code is executed (findViewById() returns the view only once)
 							mLWelcome = (LinearLayout) v.inflate();
@@ -1292,7 +1292,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 							mLWelcome.findViewById(R.id.BHint).setOnClickListener(new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									mPrefs.edit().putBoolean(C.firstTimeProcesses, false).apply();
+									mPrefs.edit().putBoolean(Constans.firstTimeProcesses, false).apply();
 									mLWelcome.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
 										@Override
 										public void onAnimationEnd(Animator animation) {
@@ -1325,10 +1325,10 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putInt(C.orientation, orientation);
-		outState.putBoolean(C.menuShown, mPWMenu.isShowing());
-		outState.putBoolean(C.settingsShown, settingsShown);
-		outState.putBoolean(C.canvasLocked, canvasLocked);
+		outState.putInt(Constans.orientation, orientation);
+		outState.putBoolean(Constans.menuShown, mPWMenu.isShowing());
+		outState.putBoolean(Constans.settingsShown, settingsShown);
+		outState.putBoolean(Constans.canvasLocked, canvasLocked);
 	}
 	
 	
@@ -1339,9 +1339,9 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	public void onStart() {
 		super.onStart();
 		bindService(new Intent(this, ServiceReader.class), mServiceConnection, 0);
-		registerReceiver(receiverSetIconRecord, new IntentFilter(C.actionSetIconRecord));
-		registerReceiver(receiverDeadProcess, new IntentFilter(C.actionDeadProcess));
-		registerReceiver(receiverFinish, new IntentFilter(C.actionFinishActivity));
+		registerReceiver(receiverSetIconRecord, new IntentFilter(Constans.actionSetIconRecord));
+		registerReceiver(receiverDeadProcess, new IntentFilter(Constans.actionDeadProcess));
+		registerReceiver(receiverFinish, new IntentFilter(Constans.actionFinishActivity));
 	}
 	
 	
@@ -1411,7 +1411,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	@Override
 	public void onBackPressed() {
 		if (mLFeedback != null && mLFeedback.getAlpha() != 0) {
-			mPrefs.edit().putLong(C.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(C.europeLondon)).getTimeInMillis()).apply();
+			mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
 			Toast.makeText(ActivityMain.this, getString(R.string.w_main_feedback_no_remind), Toast.LENGTH_LONG).show();
 			mLFeedback.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
 				@Override
@@ -1423,7 +1423,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 			return;
 		}
 		if (mLWelcome != null && mLWelcome.getAlpha() != 0) {
-			mPrefs.edit().putBoolean(C.welcome, false).apply();
+			mPrefs.edit().putBoolean(Constans.welcome, false).apply();
 			mLWelcome.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationEnd(Animator animation) {
@@ -1462,7 +1462,7 @@ public class ActivityMain extends Activity implements ActivityCompat.OnRequestPe
 	
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		if (requestCode == C.storagePermission && PackageManager.PERMISSION_DENIED == grantResults[0]) {
+		if (requestCode == Constans.storagePermission && PackageManager.PERMISSION_DENIED == grantResults[0]) {
 			Toast.makeText(ActivityMain.this, getString(R.string.w_main_storage_permission), Toast.LENGTH_LONG).show();
 		}
 	}
