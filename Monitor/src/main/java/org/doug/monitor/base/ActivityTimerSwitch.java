@@ -52,7 +52,6 @@ public class ActivityTimerSwitch extends Activity implements View.OnClickListene
         ipt_on_time.setText(DateUtil.getCurrentTime());
         ipt_off_date.setText(DateUtil.getCurrentDate());
         ipt_off_time.setText(DateUtil.getCurrentTime());
-
         //TODO 众云
         timerSwitch = new ZYTimerSwitch(this);
         String currentDate = DateUtil.getCurrentDate();
