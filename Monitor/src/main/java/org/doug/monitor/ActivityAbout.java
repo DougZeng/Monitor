@@ -28,83 +28,74 @@ import android.widget.TextView;
 
 public class ActivityAbout extends Activity {
 
-	private BroadcastReceiver receiverFinish = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			finish();
-		}
-	};
+    private BroadcastReceiver receiverFinish = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
 
 
+    @SuppressLint("InlinedApi")
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about);
 
+        final Resources res = getResources();
 
+        if (Build.VERSION.SDK_INT >= 19) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-	@SuppressLint("InlinedApi")
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_about);
-		
-		final Resources res = getResources();
-		
-		if (Build.VERSION.SDK_INT >= 19) {
-			getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-			
-			float sSW = res.getConfiguration().smallestScreenWidthDp;
-			
-			LinearLayout l = (LinearLayout) findViewById(R.id.LParent);
-			int statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.sbh, Constans.dimen, Constans.android));
-			int navigationBarHeight = 0;
-			
-			if (!ViewConfiguration.get(this).hasPermanentMenuKey() && !KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
-					&& (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT || sSW > 560)) {
-				getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-				navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.nbh, Constans.dimen, Constans.android));
-				FrameLayout nb = (FrameLayout) findViewById(R.id.LNavigationBar);
-				nb.setVisibility(View.VISIBLE);
-				((FrameLayout.LayoutParams) nb.getLayoutParams()).height = navigationBarHeight;
-			}
-			
-			l.setPadding(0, statusBarHeight, 0, navigationBarHeight);
-		}
-		
-		// http://stackoverflow.com/questions/4790746/links-in-textview
-		Linkify.addLinks((TextView) findViewById(R.id.TVAboutText), Linkify.WEB_URLS);
+            float sSW = res.getConfiguration().smallestScreenWidthDp;
+
+            LinearLayout l = (LinearLayout) findViewById(R.id.LParent);
+            int statusBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.sbh, Constans.dimen, Constans.android));
+            int navigationBarHeight = 0;
+
+            if (!ViewConfiguration.get(this).hasPermanentMenuKey() && !KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+                    && (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT || sSW > 560)) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                navigationBarHeight = res.getDimensionPixelSize(res.getIdentifier(Constans.nbh, Constans.dimen, Constans.android));
+                FrameLayout nb = (FrameLayout) findViewById(R.id.LNavigationBar);
+                nb.setVisibility(View.VISIBLE);
+                ((FrameLayout.LayoutParams) nb.getLayoutParams()).height = navigationBarHeight;
+            }
+
+            l.setPadding(0, statusBarHeight, 0, navigationBarHeight);
+        }
+
+        // http://stackoverflow.com/questions/4790746/links-in-textview
+        Linkify.addLinks((TextView) findViewById(R.id.TVAboutText), Linkify.WEB_URLS);
 //		Linkify.addLinks((TextView) findViewById(R.id.TVAboutText), Pattern.compile(getString(R.string.about_gnugpl_text)), getString(R.string.about_gnugpl_link));
-		
-		(findViewById(R.id.BGooglePlay)).setOnClickListener(new View.OnClickListener() {
-			@SuppressWarnings("deprecation")
-			@Override
-			public void onClick(View v) {
-				try {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constans.marketDetails + getPackageName()))
-							.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
-				} catch (ActivityNotFoundException e) {
-					e.printStackTrace();
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.google_play_app_site)))
-							.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
-				}
-			}
-		});
-	}
+
+        (findViewById(R.id.BGooglePlay)).setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constans.marketDetails + getPackageName()))
+                            .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.github_site)))
+                            .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
+                }
+            }
+        });
+    }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        registerReceiver(receiverFinish, new IntentFilter(Constans.actionFinishActivity));
+    }
 
 
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		registerReceiver(receiverFinish, new IntentFilter(Constans.actionFinishActivity));
-	}
-
-
-
-
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		unregisterReceiver(receiverFinish);
-	}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiverFinish);
+    }
 }

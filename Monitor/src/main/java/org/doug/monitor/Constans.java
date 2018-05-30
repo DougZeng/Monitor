@@ -48,7 +48,7 @@ public class Constans {
 	public static final String listSelected = "listSelected";
 	public static final String listProcesses = "listProcesses";
 	
-	// ActivityMain
+	// ActivityMonitor
 	public static final int storagePermission = 1;
 	public static final String kB = "kB";
 	public static final String percent = "%";
@@ -103,4 +103,15 @@ public class Constans {
 	public static final String mCBCpuTotalD = "cpuTotalD";
 	public static final String mCBCpuAMD = "cpuAMD";
 //	static final String mCBCpuRestD = "cpuRestD";
+
+
+
+	public static final String SETTING="setting";
+	public static final String BOTH="both";
+	public static final String UP="up";
+	public static final String DOWN="down";
+	public static final String CHANGED="changed";
+	public static final String INIT_X="init_x";
+	public static final String INIT_Y="init_y";
+	public static final String IS_SHOWN="is_shown";
 }

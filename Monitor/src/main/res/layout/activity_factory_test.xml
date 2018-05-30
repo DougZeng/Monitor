@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel_mian"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- LCD TEST begin -->
+    <LinearLayout
+        android:id="@+id/showlcdbackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:angle="270.0"
+            android:background="@color/red"
+            android:padding="7dp"
+            android:radius="4dp" />
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:angle="270.0"
+            android:background="@color/green"
+            android:padding="7dp"
+            android:radius="4.0dp" />
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:angle="270.0"
+            android:background="@color/blue"
+            android:padding="7dp"
+            android:radius="4.0dp" />
+    </LinearLayout>
+    <!-- LCD TEST end -->
+
+    <!-- Camera view Test begin -->
+    <SurfaceView
+        android:id="@+id/surface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+    <!-- Camera view Test end -->
+
+    <!-- Video Test begin -->
+    <org.doug.monitor.factorytest.view.CustomVideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible" />
+    <!-- Video Test end -->
+
+    <!-- APP Title begin -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="@string/str_factorytest"
+        android:textColor="@android:color/black"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+    <!-- APP Title end -->
+
+    <!-- Seting edit begin -->
+    <LinearLayout
+        android:id="@+id/ll_controlbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_testtimes"
+                android:textColor="@android:color/black"
+                android:textSize="25sp" />
+
+            <!-- 编辑输入框，输入循环次数 -->
+            <EditText
+                android:id="@+id/edit_testtimes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="@string/str_defaulttimes"
+                android:textSize="22sp" />
+        </LinearLayout>
+        <!-- 1.Start button -->
+        <Button
+            android:id="@+id/but_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_button"
+            android:text="@string/str_start"
+            android:textColor="@android:color/black"
+            android:textSize="28sp" />
+    </LinearLayout>
+    <!-- Seting edit end -->
+
+    <!-- ALL Test List  -->
+    <LinearLayout
+        android:id="@+id/ll_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible">
+        <!-- ALL Test Times begin -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/str_alltesttimes"
+                android:textColor="@android:color/black"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/txt_alltimes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="23sp" />
+        </LinearLayout>
+        <!-- ALL Test Times end -->
+
+        <!-- Current Test Times begin -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/str_curtesttimes"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_curtimes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="23sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <!-- Current Test Times end -->
+
+        <!-- 测试列表 begin -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- 测试1 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test1"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+            <!-- 测试2 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test2"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+            <!-- 测试3 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test3"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+            <!-- 测试4 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test4"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+            <!-- 测试5 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test5"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+            <!-- 测试6 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test6"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+            <!-- 测试7 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test7"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+            <!-- 测试8 -->
+            <org.doug.monitor.factorytest.view.AutoScaleTextView
+                android:id="@+id/txt_test8"
+                android:layout_width="@dimen/width"
+                android:layout_height="@dimen/height"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+        </LinearLayout>
+        <!-- 测试列表 end -->
+    </LinearLayout>
+
+    <!-- 测试报告时间 item -->
+    <RelativeLayout
+        android:id="@+id/reportlist_item"
+        android:layout_width="fill_parent"
+        android:layout_height="30dip"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginTop="50.0dip"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/test_Num"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:text="@string/test_result"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- 测试报告结果  begin-->
+    <ListView
+        android:id="@+id/report_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="82dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="75dp"
+        android:visibility="invisible" />
+    <!-- 测试报告结果 end-->
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="100dp"
+        android:orientation="horizontal">
+        <!-- Stop Button begin -->
+        <Button
+            android:id="@+id/but_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_button"
+            android:text="@string/exit"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:visibility="visible" />
+        <!-- Stop Button end -->
+
+        <!-- View Report Button begin  -->
+        <Button
+            android:id="@+id/but_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/selector_button"
+            android:text="@string/str_report"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:visibility="gone" />
+        <!-- View Report Button end  -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_bottom"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TEXT"
+            android:textSize="38sp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

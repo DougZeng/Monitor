@@ -1,156 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-    
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
     <style name="mTheme" parent="android:Theme.Holo.NoActionBar" />
-    
-    
-    
-    
-    
-	<style name="LFeedbackLayerWidth">
-		<item name="android:layout_width">300dp</item>
-	</style>
-    
-    
-    
-    
-    
-	<style name="Animations" />
-	
-	<style name="Animations.PopDownMenu">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_topright_to_bottomleft</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_bottomleft_to_topright</item>
-	</style>
-	
-	<style name="Animations.PopDownMenuBottom">
-		<item name="@android:windowEnterAnimation">@anim/grow_from_bottomcentre_to_topcentre</item>
-		<item name="@android:windowExitAnimation">@anim/shrink_from_topcentre_to_bottomcentre</item>
-	</style>
-    
-    
-    
-    
-	
-	<style name="MainWindowArrangement">
-		<item name="android:orientation">vertical</item>
-	</style>
-	
-	<style name="ViewGraphicTopShadow">
-		<item name="android:visibility">gone</item>
-	</style>
-	
-	<style name="ParameterRow">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:paddingTop">5dp</item>
-		<item name="android:paddingBottom">5dp</item>
-		<item name="android:paddingLeft">17dp</item>
-		<item name="android:paddingRight">21dp</item>
-		<item name="android:gravity">center_vertical</item>
-		<item name="android:background">@drawable/bg_parameter_row</item>
-	</style>
-	
-	<style name="ParameterStatusIcon">
-		<item name="android:layout_width">15dp</item>
-		<item name="android:layout_height">15dp</item>
-		<item name="android:layout_marginLeft">5dp</item>
-		<item name="android:src">@drawable/icon_play</item>
-		<item name="android:contentDescription">@string/cd_paramter_status_icon</item>
-	</style>
-	
-	<style name="FirstColumn">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_marginLeft">8dp</item>
-		<item name="android:layout_weight">1</item>
-		<item name="android:textSize">16sp</item>
-		<item name="android:textStyle">bold</item>
-		<!-- <item name="android:shadowColor">@color/VeryDarkGray</item>
-		<item name="android:shadowDx">1.0</item>
-		<item name="android:shadowDy">1.0</item>
-		<item name="android:shadowRadius">4.0</item> -->
-	</style>
-	
-	<style name="SecondColumn">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:gravity">right</item>
-		<item name="android:text">@string/p_kb</item>
-		<item name="android:textSize">16sp</item>
-	</style>
-	
-	<style name="ThirdColumn">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:minWidth">60dp</item>
-		<item name="android:gravity">right</item>
-		<item name="android:text">@string/p_percentage</item>
-		<item name="android:textSize">16sp</item>
-	</style>
-	
-	
-	
-	
-	
-	<style name="MenuEntry">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">47dp</item>
-		<item name="android:paddingLeft">12dp</item>
-		<item name="android:gravity">center_vertical</item>
-		<item name="android:orientation">horizontal</item>
-		<item name="android:background">@drawable/button_menu_entry</item>
-	</style>
-	
-	<style name="MenuEntryIcon">
-		<item name="android:layout_width">30dp</item>
-		<item name="android:layout_height">30dp</item>
-		<item name="android:alpha">0.4</item>
-	</style>
-	
-	<style name="MenuEntryText">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">match_parent</item>
-		<item name="android:paddingLeft">10dp</item>
-		<item name="android:gravity">center_vertical</item>
-		<item name="android:textSize">18sp</item>
-		<item name="android:textColor">@color/VeryDarkGray</item>
-	</style>
-	
-	
-	
-	
-	
-	<style name="TVTab">
-		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">60dp</item>
-		<item name="android:layout_weight">1</item>
-		<item name="android:gravity">center</item>
-		<item name="android:textSize">16sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:background">@drawable/gradient_tab_selected</item>
-	</style>
-	
-	<style name="CBParameters">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">40dp</item>
-	</style>
-	
-	
-	
-	
-	
-	<style name="TVInterval">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_marginTop">14dp</item>
-		<item name="android:textColor">@color/white</item>
-	</style>
-	
-	<style name="SBInterval">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_marginTop">4dp</item>
-		<item name="android:max">3</item>
-	</style>
-	
+
+
+    <style name="LFeedbackLayerWidth">
+        <item name="android:layout_width">300dp</item>
+    </style>
+
+
+    <style name="Animations" />
+
+    <style name="Animations.PopDownMenu">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_topright_to_bottomleft</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_bottomleft_to_topright</item>
+    </style>
+
+    <style name="Animations.PopDownMenuBottom">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottomcentre_to_topcentre</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_topcentre_to_bottomcentre</item>
+    </style>
+
+
+    <style name="MainWindowArrangement">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ViewGraphicTopShadow">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="ParameterRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">17dp</item>
+        <item name="android:paddingRight">21dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/bg_parameter_row</item>
+    </style>
+
+    <style name="ParameterStatusIcon">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:src">@drawable/icon_play</item>
+        <item name="android:contentDescription">@string/cd_paramter_status_icon</item>
+    </style>
+
+    <style name="FirstColumn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <!-- <item name="android:shadowColor">@color/VeryDarkGray</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">4.0</item> -->
+    </style>
+
+    <style name="SecondColumn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">right</item>
+        <item name="android:text">@string/p_kb</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ThirdColumn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">60dp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:text">@string/p_percentage</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <style name="MenuEntry">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">47dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/button_menu_entry</item>
+    </style>
+
+    <style name="MenuEntryIcon">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:alpha">0.4</item>
+    </style>
+
+    <style name="MenuEntryText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/VeryDarkGray</item>
+    </style>
+
+
+    <style name="TVTab">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/gradient_tab_selected</item>
+    </style>
+
+    <style name="CBParameters">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+
+    <style name="TVInterval">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SBInterval">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:max">3</item>
+    </style>
+
+    //Theme.AppCompat.Light.DarkActionBar
+
+    <style name="AppBaseTheme" parent="android:Theme.DeviceDefault.Light.NoActionBar.Fullscreen">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    //TextAppearance.Widget.AppCompat.Toolbar.Title
+    <style name="AppTheme.Toolbar.Title" parent="android:TextAppearance.Material.Widget.Toolbar.Title" tools:targetApi="lollipop">
+        <item name="android:textSize">@dimen/abc_text_size_title_material_toolbar</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    //TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse
+    <style name="MyTabLayoutTextAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+
+    <style name="SwitchButtonMD" tools:ignore="ResourceName">
+        <item name="kswThumbDrawable">@drawable/ksw_md_thumb</item>
+        <item name="kswBackColor">@color/ksw_md_back_color</item>
+        <item name="kswThumbRangeRatio">1.45</item>
+        <item name="kswThumbMarginLeft">-16dp</item>
+        <item name="kswThumbMarginTop">-14dp</item>
+        <item name="kswThumbMarginRight">-16dp</item>
+        <item name="kswThumbMarginBottom">-14dp</item>
+        <item name="kswThumbWidth">@dimen/ksw_md_thumb_ripple_size</item>
+        <item name="kswThumbHeight">@dimen/ksw_md_thumb_ripple_size</item>
+    </style>
+
+    <style name="SwitchButtonStyle">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
 </resources>
