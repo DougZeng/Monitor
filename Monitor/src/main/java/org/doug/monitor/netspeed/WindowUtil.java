@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import org.doug.monitor.base.Constans;
+import org.doug.monitor.base.util.SharedPreferencesUtils;
 
 import java.text.NumberFormat;
 

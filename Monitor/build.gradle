@@ -25,6 +25,8 @@ android {
         targetSdkVersion 27
         versionCode 180524
         versionName "18.5.24"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        multiDexEnabled true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -91,4 +93,7 @@ dependencies {
     compile 'com.google.protobuf:protobuf-java:3.4.0'
     compile 'com.google.protobuf:protoc:3.1.0'
 
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }

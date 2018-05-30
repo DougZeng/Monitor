@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.base.Constans;
+import org.doug.monitor.base.util.SharedPreferencesUtils;
 
 /**
  * Created by wesine on 2018/5/23.

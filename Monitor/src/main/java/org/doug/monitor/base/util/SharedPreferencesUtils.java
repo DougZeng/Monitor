@@ -1,4 +1,4 @@
-package org.doug.monitor.netspeed;
+package org.doug.monitor.base.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

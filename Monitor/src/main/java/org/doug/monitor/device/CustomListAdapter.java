@@ -18,6 +18,7 @@ import com.an.deviceinfo.location.DeviceLocation;
 import com.an.deviceinfo.userapps.UserApps;
 
 import org.doug.monitor.R;
+import org.doug.monitor.base.util.MathUtil;
 
 import java.util.List;
 
@@ -86,7 +87,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
 
     private void handleAdInfo(CustomViewHolder holder, int position) {
         if (position == 0) {
-            holder.textView.setText("AdvertisingId:");
+            holder.textView.setText("AdvertisingID");
             holder.desc.setText(((Ad) object).getAdvertisingId());
         } else {
             holder.textView.setText("Allow to track ads:");
@@ -198,23 +199,23 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
                 break;
             case 1:
                 holder.textView.setText("Total RAM:");
-                holder.desc.setText(String.valueOf(convertToGb(((Memory) object).getTotalRAM())) + " GB");
+                holder.desc.setText(String.valueOf(MathUtil.convertToGb(((Memory) object).getTotalRAM())) + " GB");
                 break;
             case 2:
                 holder.textView.setText("Total Internal Memory Space:");
-                holder.desc.setText(String.valueOf(convertToGb(((Memory) object).getTotalInternalMemorySize())) + " GB");
+                holder.desc.setText(String.valueOf(MathUtil.convertToGb(((Memory) object).getTotalInternalMemorySize())) + " GB");
                 break;
             case 3:
                 holder.textView.setText("Available Memory Space:");
-                holder.desc.setText(String.valueOf(convertToGb(((Memory) object).getAvailableInternalMemorySize())) + " GB");
+                holder.desc.setText(String.valueOf(MathUtil.convertToGb(((Memory) object).getAvailableInternalMemorySize())) + " GB");
                 break;
             case 4:
                 holder.textView.setText("Total External Memory Space:");
-                holder.desc.setText(String.valueOf(convertToGb(((Memory) object).getTotalExternalMemorySize())) + " GB");
+                holder.desc.setText(String.valueOf(MathUtil.convertToGb(((Memory) object).getTotalExternalMemorySize())) + " GB");
                 break;
             case 5:
                 holder.textView.setText("Available External Momory Space:");
-                holder.desc.setText(String.valueOf(convertToGb(((Memory) object).getAvailableExternalMemorySize())) + " GB");
+                holder.desc.setText(String.valueOf(MathUtil.convertToGb(((Memory) object).getAvailableExternalMemorySize())) + " GB");
                 break;
         }
     }
@@ -368,10 +369,5 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
                 holder.desc.setText(String.valueOf(((Device) object).getScreenWidth()));
                 break;
         }
-    }
-
-
-    private float convertToGb(long valInBytes) {
-        return Float.valueOf(String.format("%.2f", (float) valInBytes / (1024 * 1024 * 1024)));
     }
 }

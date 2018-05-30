@@ -26,10 +26,8 @@ public class ActivityDevice extends AppCompatActivity {
         setContentView(R.layout.activity_device);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(0);
-
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addTitle("Device");
         adapter.addTitle("Memory");

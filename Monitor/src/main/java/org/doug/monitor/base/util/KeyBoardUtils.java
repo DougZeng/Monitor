@@ -1,4 +1,4 @@
-package org.doug.monitor.factorytest.tools;
+package org.doug.monitor.base.util;
 
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;

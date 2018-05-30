@@ -11,4 +11,8 @@ public class MathUtil {
     public static DecimalFormat mFormatPercent = new DecimalFormat("##0.0");
     public static DecimalFormat mFormatTime = new DecimalFormat("0.#");
 
+    public static float convertToGb(long valInBytes) {
+        return Float.valueOf(String.format("%.2f", (float) valInBytes / (1024 * 1024 * 1024)));
+    }
+
 }

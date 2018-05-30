@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 
 import org.doug.monitor.base.Constans;
 import org.doug.monitor.R;
+import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.base.util.Toaster;
 
 /**

@@ -5,7 +5,7 @@
     <string name="anim_time">100</string>
     <string name="notify_read">Monitor is reading values</string>
     <string name="notify_read2">Reading values in the background</string>
-    <string name="notify_record">AnotherMonitor is recording values</string>
+    <string name="notify_record">Monitor is recording values</string>
     <string name="notify_record2">Recording values in the background</string>
     <string name="notify_toast_saved">saved in the folder</string>
     <string name="notify_toast_error">An error happened when saving the CSV file:</string>
@@ -27,7 +27,7 @@
     <string name="w_main_hint_title">FYI</string>
     <string name="w_main_hint">Enable and disable parameters shown on the graph by pressing its label.
         \n\nYou can open the Settings panel by clicking the graph.</string>
-    <string name="w_main_storage_permission">AnotherMonitor cannot record values if you don\'t grant Storage permission.
+    <string name="w_main_storage_permission">Monitor cannot record values if you don\'t grant Storage permission.
         Restart the app to show the permission prompt again.</string>
     <string name="w_main_mp_button_text">Alright</string>
     <string name="w_processes_dead">DEAD</string>
@@ -50,8 +50,8 @@
         \n\nYou can see the total CPU and memory usage of all processes currently running on the system.
 		If the device has more than one core the CPU usage will be the sume of all cores\' CPU usage.
 		Add processes by pressing \'Choose other process(es)\' button.
-        AnotherMonitor process will always be shown in the list. Switch between CPU and memory usage by pressing the \'Memory\' button.
-        The memory monitored and shown by AnotherMonitor is the Total Private Dirty.
+        Monitor process will always be shown in the list. Switch between CPU and memory usage by pressing the \'Memory\' button.
+        The memory monitored and shown by Monitor is the Total Private Dirty.
         If Android kills a process due to low memory
         or the process finishes itself, \'DEAD\' will be shown.
         You can disable or re-enable showing the process on the graph by pressing its label.
@@ -61,7 +61,7 @@
         \n\nMore info about CPU usage in Linux:
         \n- http://stackoverflow.com/questions/1420426/calculating-cpu-usage-of-a-process-in-linux
         \n\n<big><b>Memory</b></big>
-        \n\nAnotherMonitor shows on screen the device\'s most relevant memory parameters. They are both parameterts related with Linux and Android:
+        \n\nMonitor shows on screen the device\'s most relevant memory parameters. They are both parameterts related with Linux and Android:
         \n\n<b>Mem used</b>: the memory which is already in use by the system.
         \n\n<b>Mem available</b>: the available memory on the system. This number should not be considered absolute: due to the nature of
         the kernel, a significant portion of this memory is actually in use and needed for the overall system to run well. <b>Mem available</b> is
@@ -232,5 +232,6 @@
     <string name="fcamera_no_exits">Front Camera not exist!</string>
     <string name="camera_no_exits">Not Find Camera</string>
     <string name="test_start_tip">The current power is lower than 10%,\n please insert the charger,\n or it can not be tested.</string>
+
 
 </resources>
