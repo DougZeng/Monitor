@@ -4,7 +4,6 @@ package org.doug.monitor.factorytest.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -17,7 +16,7 @@ import org.doug.monitor.R;
  *
  * @version 1.0
  */
-public class AutoScaleTextView extends AppCompatTextView {
+public class AutoScaleTextView extends TextView {
     private Paint textPaint;
     private float preferredTextSize;
     private float minTextSize;

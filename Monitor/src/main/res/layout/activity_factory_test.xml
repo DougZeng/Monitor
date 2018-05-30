@@ -100,6 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                android:labelFor="@+id/edit_testtimes"
                 android:text="@string/str_defaulttimes"
                 android:textSize="22sp" />
         </LinearLayout>

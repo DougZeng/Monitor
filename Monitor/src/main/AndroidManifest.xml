@@ -32,14 +32,14 @@
 
 
     <application
-        android:name=".App"
+        android:name=".base.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_monitor"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
         <activity
-            android:name=".ActivityMenu"
+            android:name=".menu.ActivityMenu"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,21 +48,29 @@
         </activity>
 
         <activity
-            android:name=".ActivityDevice"
+            android:name=".device.ActivityDevice"
             android:launchMode="singleTask">
 
         </activity>
 
 
         <activity
-            android:name=".ActivityMonitor"
+            android:name=".monitor.ActivityMonitor"
             android:launchMode="singleTask" />
 
-        <activity android:name=".ActivityProcesses" />
-        <activity android:name=".ActivityHelp" />
-        <activity android:name=".ActivityAbout" />
+        <activity
+            android:name=".monitor.ActivityProcesses"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".help.ActivityHelp"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".about.ActivityAbout"
+            android:launchMode="singleTask" />
 
-        <activity android:name=".ActivityTimerSwitch" />
+        <activity
+            android:name=".base.ActivityTimerSwitch"
+            android:launchMode="singleTask" />
 
 
         <activity
@@ -80,9 +88,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".bluetooth.SampleActivity" />
+        <activity
+            android:name=".base.bluetooth.SampleActivity"
+            android:launchMode="singleTask" />
 
-        <service android:name=".ServiceReader" />
+        <service android:name=".monitor.ServiceReader" />
 
         <service
             android:name=".netspeed.NSTileService"

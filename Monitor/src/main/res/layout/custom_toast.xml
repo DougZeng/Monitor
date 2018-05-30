@@ -15,5 +15,5 @@
         android:padding="24dp"
         android:textColor="#000"
         android:textSize="18sp"
-        tools:text="@string/fake_text"/>
+        tools:text="@string/fake_text" />
 </FrameLayout>

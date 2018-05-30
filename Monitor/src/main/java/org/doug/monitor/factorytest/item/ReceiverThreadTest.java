@@ -14,7 +14,7 @@ import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.R;
 import org.doug.monitor.factorytest.FactoryAutoTest;
-import org.doug.monitor.util.DateUtil;
+import org.doug.monitor.base.util.DateUtil;
 
 
 public class ReceiverThreadTest {

@@ -8,7 +8,7 @@ import android.view.WindowManager;
 
 import com.orhanobut.logger.Logger;
 
-import org.doug.monitor.Constans;
+import org.doug.monitor.base.Constans;
 
 /**
  * Created by wesine on 2018/5/23.

@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <org.doug.monitor.switchbutton.SwitchButton
+    <org.doug.monitor.base.switchbutton.SwitchButton
         android:visibility="invisible"
         android:id="@+id/sb_text_state"
         style="@style/SwitchButtonStyle"

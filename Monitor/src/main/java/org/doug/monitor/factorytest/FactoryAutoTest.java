@@ -1,6 +1,7 @@
 package org.doug.monitor.factorytest;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.graphics.Color;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -27,7 +27,7 @@ import android.widget.VideoView;
 import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.R;
-import org.doug.monitor.util.Toaster;
+import org.doug.monitor.base.util.Toaster;
 import org.doug.monitor.factorytest.item.CameraTest;
 import org.doug.monitor.factorytest.item.LCDTest;
 import org.doug.monitor.factorytest.item.ReceiverLoopTest;
@@ -43,7 +43,7 @@ import org.doug.monitor.factorytest.view.ListViewForReport;
 /**
  *
  */
-public class FactoryAutoTest extends AppCompatActivity implements Toaster.DialogCallback {
+public class FactoryAutoTest extends Activity implements Toaster.DialogCallback {
 
     private static String TAG = FactoryAutoTest.class.getSimpleName();
 

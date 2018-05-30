@@ -137,7 +137,7 @@
 
     //Theme.AppCompat.Light.DarkActionBar
 
-    <style name="AppBaseTheme" parent="android:Theme.DeviceDefault.Light.NoActionBar.Fullscreen">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -146,13 +146,15 @@
     </style>
 
     //TextAppearance.Widget.AppCompat.Toolbar.Title
+
     <style name="AppTheme.Toolbar.Title" parent="android:TextAppearance.Material.Widget.Toolbar.Title" tools:targetApi="lollipop">
         <item name="android:textSize">@dimen/abc_text_size_title_material_toolbar</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
     //TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse
-    <style name="MyTabLayoutTextAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Title.Inverse">
+
+    <style name="MyTabLayoutTextAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
     </style>

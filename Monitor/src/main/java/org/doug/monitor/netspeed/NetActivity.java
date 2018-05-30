@@ -1,5 +1,6 @@
 package org.doug.monitor.netspeed;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -7,21 +8,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RadioButton;
 
-import org.doug.monitor.Constans;
+import org.doug.monitor.base.Constans;
 import org.doug.monitor.R;
-import org.doug.monitor.util.Toaster;
+import org.doug.monitor.base.util.Toaster;
 
 /**
  * Created by wesine on 2018/5/23.
  */
 
-public class NetActivity extends AppCompatActivity {
+public class NetActivity extends Activity {
     private int REQUEST_CODE=0;
     private Button showBt;
     private Button closeBt;
@@ -37,7 +37,7 @@ public class NetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_net);
         //检查悬浮窗权限
 //        if(checkDrawOverlayPermission()){
             init();

@@ -29,7 +29,7 @@
             android:onClick="monitor"
             android:text="monitor" />
 
-        <org.doug.monitor.switchbutton.SwitchButton
+        <org.doug.monitor.base.switchbutton.SwitchButton
             android:id="@+id/sb_text_state"
             style="@style/SwitchButtonStyle"
             android:layout_width="wrap_content"

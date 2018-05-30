@@ -9,7 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
-import org.doug.monitor.Constans;
+import org.doug.monitor.base.Constans;
 
 import java.text.NumberFormat;
 
