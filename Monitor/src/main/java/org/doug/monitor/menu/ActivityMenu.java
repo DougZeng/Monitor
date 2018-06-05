@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import org.doug.monitor.base.Constans;
+import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.device.ActivityDevice;
 import org.doug.monitor.monitor.ActivityMonitor;
 import org.doug.monitor.base.App;
@@ -34,12 +36,22 @@ public class ActivityMenu extends AppCompatActivity implements BaseQuickAdapter.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+        int bootCount = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.IS_FIRST_BOOT, Constans.DEFAULT_COUNT);
+        if (bootCount == 0) {
+            SharedPreferencesUtils.putToSpfs(this, Constans.IS_FIRST_BOOT, 1);
+            Intent intent = new Intent(this, FactoryAutoTest.class);
+            intent.setAction(Constans.actionAutoTest);
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_menu);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         deviceItems = new ArrayList<DeviceItem>();
         deviceItems.add(new DeviceItem("设备", "设备配置", false));
         deviceItems.add(new DeviceItem("监控", "CPU memory 运行状态", false));
-        deviceItems.add(new DeviceItem("测试", "测试配置", false));
+        deviceItems.add(new DeviceItem("网络", "带宽上下行测试", false));
 //        deviceItems.add(new DeviceItem("定时开关机", "众云", false));
         deviceItems.add(new DeviceItem("老化测试", "24H", false));
         CommonAdapter adapter = new CommonAdapter(deviceItems);
@@ -73,6 +85,7 @@ public class ActivityMenu extends AppCompatActivity implements BaseQuickAdapter.
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        deviceItems.clear();
         App.exit();
     }
 }

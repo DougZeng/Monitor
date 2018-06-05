@@ -35,6 +35,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.jaredrummler.android.processes.AndroidProcesses;
+import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.base.Constans;
 import org.doug.monitor.R;
@@ -108,15 +109,17 @@ public class ActivityProcesses extends Activity {
             if (mListSelected != null && !mListSelected.isEmpty()) {
                 for (Map<String, Object> process : mListProcesses)
                     for (Map<String, Object> selected : mListSelected)
-                        if (process.get(Constans.pId).equals(selected.get(Constans.pId)))
+                        if (process.get(Constans.pId).equals(selected.get(Constans.pId))) {
                             process.put(Constans.pSelected, Boolean.TRUE);
-            } else mListSelected = new ArrayList<Map<String, Object>>();
-
+                        }
+            } else {
+                mListSelected = new ArrayList<Map<String, Object>>();
+            }
         } else {
             PackageManager pm = getPackageManager();
 
             List<ActivityManager.RunningAppProcessInfo> runningAppProcesses;
-            if (Build.VERSION.SDK_INT < 22) { // http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag
+            if (Build.VERSION.SDK_INT < 22) {
                 runningAppProcesses = ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).getRunningAppProcesses();
             } else runningAppProcesses = AndroidProcesses.getRunningAppProcessInfo(this);
 
@@ -128,7 +131,9 @@ public class ActivityProcesses extends Activity {
                         try {
                             name = (String) pm.getApplicationLabel(pm.getApplicationInfo(p.pkgList != null && p.pkgList.length > 0 ? p.pkgList[0] : p.processName, 0));
                         } catch (NameNotFoundException e) {
+                            Logger.d(e.getMessage());
                         } catch (NotFoundException e) {
+                            Logger.d(e.getMessage());
                         }
 
                         if (name == null)
@@ -182,7 +187,7 @@ public class ActivityProcesses extends Activity {
         mLV.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SimpleAdapterCustomised.Tag tag = (SimpleAdapterCustomised.Tag) view.getTag();
+                Tag tag = (Tag) view.getTag();
                 tag.selected = !tag.selected;
                 Map<String, Object> newEntry = new HashMap<String, Object>();
                 newEntry.put(Constans.pId, mListProcesses.get(position).get(Constans.pId));
@@ -230,10 +235,12 @@ public class ActivityProcesses extends Activity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (mListProcesses.size() != 0)
+        if (mListProcesses.size() != 0) {
             outState.putSerializable(Constans.listProcesses, (Serializable) mListProcesses);
-        if (mListSelected.size() != 0)
+        }
+        if (mListSelected.size() != 0) {
             outState.putSerializable(Constans.listSelected, (Serializable) mListSelected);
+        }
     }
 
 
@@ -254,21 +261,29 @@ public class ActivityProcesses extends Activity {
                 tag.tvPAppName = (TextView) view.findViewById(R.id.TVpAppName);
                 tag.tvPName = (TextView) view.findViewById(R.id.TVpName);
                 view.setTag(tag);
-            } else tag = (Tag) view.getTag();
+            } else {
+                tag = (Tag) view.getTag();
+            }
 
-            if (position == mListProcesses.size() - 1)
+            if (position == mListProcesses.size() - 1) {
                 view.setPadding(0, 0, 0, navigationBarHeight);
-            else view.setPadding(0, 0, 0, 0);
+            } else {
+                view.setPadding(0, 0, 0, 0);
+            }
 
-            if ((Boolean) mListProcesses.get(position).get(Constans.pSelected))
+            if ((Boolean) mListProcesses.get(position).get(Constans.pSelected)) {
                 tag.l.setBackgroundColor(ActivityProcesses.this.getResources().getColor(R.color.bgProcessessSelected));
-            else tag.l.setBackgroundColor(Color.TRANSPARENT);
+            } else {
+                tag.l.setBackgroundColor(Color.TRANSPARENT);
+            }
             try {
-                if (mListProcesses.get(position).get(Constans.pAppName).equals(mListProcesses.get(position).get(Constans.pName)))
+                if (mListProcesses.get(position).get(Constans.pAppName).equals(mListProcesses.get(position).get(Constans.pName))) {
                     tag.iv.setImageDrawable(getDrawable(R.drawable.transparent_pixel));
-                else
+                } else {
                     tag.iv.setImageDrawable(getPackageManager().getApplicationIcon((String) mListProcesses.get(position).get(Constans.pPackage)));
+                }
             } catch (NameNotFoundException e) {
+                Logger.d(e.getMessage());
             }
             tag.tvPAppName.setText((String) mListProcesses.get(position).get(Constans.pAppName));
             tag.tvPName.setText(mListProcesses.get(position).get(Constans.pName) + " - Pid: " + mListProcesses.get(position).get(Constans.pId));
@@ -276,12 +291,6 @@ public class ActivityProcesses extends Activity {
             return view;
         }
 
-        class Tag {
-            boolean selected;
-            LinearLayout l;
-            ImageView iv;
-            TextView tvPName, tvPAppName;
-        }
     }
 
 

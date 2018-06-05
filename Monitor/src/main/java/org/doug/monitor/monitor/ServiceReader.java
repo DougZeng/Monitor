@@ -49,11 +49,13 @@ import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 
+import org.doug.monitor.base.App;
 import org.doug.monitor.base.Constans;
 import org.doug.monitor.R;
+import org.doug.monitor.base.util.SharedPreferencesUtils;
 
 
-public class ServiceReader extends Service {
+public class ServiceReader extends Service implements Reader {
 
     private boolean /*threadSuspended, */recording, firstRead = true, topRow = true;
     private int memTotal, pId, intervalRead, intervalUpdate, intervalWidth, maxSamples = 2000;
@@ -76,7 +78,7 @@ public class ServiceReader extends Service {
     private BufferedReader reader;
     private BufferedWriter mW;
     private File mFile;
-    private SharedPreferences mPrefs;
+    //    private SharedPreferences mPrefs;
     private Runnable readRunnable = new Runnable() { // http://docs.oracle.com/javase/8/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html
         @Override
         public void run() {
@@ -158,10 +160,14 @@ public class ServiceReader extends Service {
         amMI = am.getProcessMemoryInfo(new int[]{pId});
         mi = new ActivityManager.MemoryInfo();
 
-        mPrefs = getSharedPreferences(getString(R.string.app_name) + Constans.prefs, MODE_PRIVATE);
-        intervalRead = mPrefs.getInt(Constans.intervalRead, Constans.defaultIntervalRead);
-        intervalUpdate = mPrefs.getInt(Constans.intervalUpdate, Constans.defaultIntervalUpdate);
-        intervalWidth = mPrefs.getInt(Constans.intervalWidth, Constans.defaultIntervalWidth);
+        intervalRead = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.intervalRead, Constans.defaultIntervalRead);
+        intervalUpdate = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.intervalUpdate, Constans.defaultIntervalUpdate);
+        intervalWidth = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.intervalWidth, Constans.defaultIntervalWidth);
+
+//        mPrefs = getSharedPreferences(getString(R.string.app_name) + Constans.prefs, MODE_PRIVATE);
+//        intervalRead = mPrefs.getInt(Constans.intervalRead, Constans.defaultIntervalRead);
+//        intervalUpdate = mPrefs.getInt(Constans.intervalUpdate, Constans.defaultIntervalUpdate);
+//        intervalWidth = mPrefs.getInt(Constans.intervalWidth, Constans.defaultIntervalWidth);
 
         readThread.start();
 
@@ -286,10 +292,11 @@ public class ServiceReader extends Service {
                 if (firstRead && s.startsWith("MemTotal:")) {
                     memTotal = Integer.parseInt(s.split("[ ]+", 3)[1]);
                     firstRead = false;
-                } else if (s.startsWith("MemFree:"))
+                } else if (s.startsWith("MemFree:")) {
                     memFree.add(0, s.split("[ ]+", 3)[1]);
-                else if (s.startsWith("Cached:"))
+                } else if (s.startsWith("Cached:")) {
                     cached.add(0, s.split("[ ]+", 3)[1]);
+                }
 
                 s = reader.readLine();
             }
@@ -432,20 +439,21 @@ public class ServiceReader extends Service {
 
 
     private float restrictPercentage(float percentage) {
-        if (percentage > 100)
+        if (percentage > 100) {
             return 100;
-        else if (percentage < 0)
+        } else if (percentage < 0) {
             return 0;
-        else return percentage;
+        } else {
+            return percentage;
+        }
     }
 
 
     @SuppressWarnings("unchecked")
     private void record() {
         if (mW == null) {
-            File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Monitor");
-            dir.mkdirs();
-            mFile = new File(dir, new StringBuilder().append(getString(R.string.app_name)).append("Record-").append(getDate()).append(".csv").toString());
+
+            mFile = new File(App.getRootDir(), new StringBuilder().append("Monitor").append("Record-").append(getDate()).append(".csv").toString());
 
             try {
                 mW = new BufferedWriter(new FileWriter(mFile));
@@ -503,7 +511,7 @@ public class ServiceReader extends Service {
     }
 
 
-    void startRecord() {
+    public void startRecord() {
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             Toast.makeText(this, this.getString(R.string.w_main_storage_permission), Toast.LENGTH_SHORT).show();
             return;
@@ -512,7 +520,7 @@ public class ServiceReader extends Service {
         sendBroadcast(new Intent(Constans.actionSetIconRecord));
     }
 
-    void stopRecord() {
+    public void stopRecord() {
         recording = false;
         sendBroadcast(new Intent(Constans.actionSetIconRecord));
         try {
@@ -520,9 +528,6 @@ public class ServiceReader extends Service {
             mW.close();
             mW = null;
 
-            // http://stackoverflow.com/questions/13737261/nexus-4-not-showing-files-via-mtp
-//			MediaScannerConnection.scanFile(this, new String[] { mFile.getAbsolutePath() }, null, null);
-            // http://stackoverflow.com/questions/5739140/mediascannerconnection-produces-android-app-serviceconnectionleaked
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).setData(Uri.fromFile(mFile)));
 
             String s = new StringBuilder().append("Monitor").append("Record-").append(getDate()).append(".csv ").append(getString(R.string.notify_toast_saved))
@@ -535,12 +540,12 @@ public class ServiceReader extends Service {
         mNM.notify(10, mNotificationRead);
     }
 
-    boolean isRecording() {
+    public boolean isRecording() {
         return recording;
     }
 
 
-    void notifyError(final IOException e) {
+    public void notifyError(final IOException e) {
         e.printStackTrace();
         if (mW != null)
             stopRecord();
@@ -574,18 +579,18 @@ public class ServiceReader extends Service {
     }
 
 
-    void setIntervals(int intervalRead, int intervalUpdate, int intervalWidth) {
+    public void setIntervals(int intervalRead, int intervalUpdate, int intervalWidth) {
         this.intervalRead = intervalRead;
         this.intervalUpdate = intervalUpdate;
         this.intervalWidth = intervalWidth;
     }
 
 
-    List<Map<String, Object>> getProcesses() {
+    public List<Map<String, Object>> getProcesses() {
         return mListSelected != null && !mListSelected.isEmpty() ? mListSelected : null;
     }
 
-    void addProcess(Map<String, Object> process) {
+    public void addProcess(Map<String, Object> process) {
         // Integer	   Constans.pId
         // String	   Constans.pName
         // Integer	   Constans.work
@@ -596,7 +601,7 @@ public class ServiceReader extends Service {
         mListSelected.add(process);
     }
 
-    void removeProcess(Map<String, Object> process) {
+    public void removeProcess(Map<String, Object> process) {
         synchronized (mListSelected) {
             Iterator<Map<String, Object>> i = mListSelected.iterator();
             while (i.hasNext())
@@ -608,52 +613,52 @@ public class ServiceReader extends Service {
     }
 
 
-    int getIntervalRead() {
+    public int getIntervalRead() {
         return intervalRead;
     }
 
-    int getIntervalUpdate() {
+    public int getIntervalUpdate() {
         return intervalUpdate;
     }
 
-    int getIntervalWidth() {
+    public int getIntervalWidth() {
         return intervalWidth;
     }
 
 
-    List<Float> getCPUTotalP() {
+    public List<Float> getCPUTotalP() {
         return cpuTotal;
     }
 
-    List<Float> getCPUAMP() {
+    public List<Float> getCPUAMP() {
         return cpuAM;
     }
 
-    List<Integer> getMemoryAM() {
+    public List<Integer> getMemoryAM() {
         return memoryAM;
     }
 
-    int getMemTotal() {
+    public int getMemTotal() {
         return memTotal;
     }
 
-    List<String> getMemUsed() {
+    public List<String> getMemUsed() {
         return memUsed;
     }
 
-    List<String> getMemAvailable() {
+    public List<String> getMemAvailable() {
         return memAvailable;
     }
 
-    List<String> getMemFree() {
+    public List<String> getMemFree() {
         return memFree;
     }
 
-    List<String> getCached() {
+    public List<String> getCached() {
         return cached;
     }
 
-    List<String> getThreshold() {
+    public List<String> getThreshold() {
         return threshold;
     }
 }

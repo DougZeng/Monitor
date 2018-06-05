@@ -234,4 +234,5 @@
     <string name="fcamera_no_exits">前置相机不存在</string>
     <string name="camera_no_exits">未发现相机</string>
     <string name="test_start_tip">\t当前电量低于10％，\n请插入充电器，\n否则不能进行测试。</string>
+
 </resources>

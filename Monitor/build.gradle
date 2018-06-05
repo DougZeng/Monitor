@@ -23,8 +23,8 @@ android {
         applicationId 'org.doug.monitor'
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 180524
-        versionName "18.5.24"
+        versionCode 180605
+        versionName "18.6.5"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         multiDexEnabled true
     }

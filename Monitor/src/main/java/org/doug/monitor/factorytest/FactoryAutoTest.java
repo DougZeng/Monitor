@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -27,7 +28,10 @@ import android.widget.VideoView;
 import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.R;
+import org.doug.monitor.base.App;
 import org.doug.monitor.base.Constans;
+import org.doug.monitor.base.util.AnrMonitor;
+import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.base.util.Toaster;
 import org.doug.monitor.factorytest.item.CameraTest;
 import org.doug.monitor.factorytest.item.LCDTest;
@@ -112,6 +116,8 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
     private static boolean TEST_OVER_FLAG = false;
     private static boolean TEST_START_FLAG = false;
     private static boolean TEST_START_FLAG_CHARGEING = false; //chb add for VFOZBAUBQ-179 at 2015-11-9
+
+    private static boolean TEST_AUTO_FLAG = false;
 
     private int resultCount;
 
@@ -220,6 +226,9 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
                         }
                         UpdateCurTimes();// update Test Times
                         break;
+                    case MSG_AUTO_TEST:
+                        mStartButton.performClick();
+                        break;
                     default:
                         break;
                 }
@@ -228,6 +237,7 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
 
     };
     private Toaster toaster;
+    private AnrMonitor anrMonitor;
 
 
     public void getView() {
@@ -340,6 +350,7 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             //ExitDialog();
+
         }
         return false;
     }
@@ -369,12 +380,32 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
         registerReceiver(mBatteryReceiver, intentBatteryFilter);
 
         resultCount = 0;
+
     }
 
     /***/
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        if (intent != null) {
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action) && action.equals(Constans.actionAutoTest)) {
+                TEST_AUTO_FLAG = true;
+                mEditTestTimesEditText.setText(Constans.DEFAULT_TEST_TIMES);
+                mEditTestTimesEditText.setEnabled(false);
+                mEditTestTimesEditText.setFocusable(false);
+                Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
+
+                handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, 3000);
+                Logger.d("3s later will enter factory auto test!");
+            }
+        }
     }
 
     @Override
@@ -438,6 +469,7 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
         }
 
         resultCount = 0;
+
     }
 
     /**
@@ -472,7 +504,7 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
      * @Functions: When you click the Start button to begin the following events.
      */
     public void OnStartButton() {
-        if (TEST_START_FLAG || TEST_START_FLAG_CHARGEING) {//chb modify for VFOZBAUBQ-179 2015-11-9
+        if (TEST_START_FLAG || TEST_START_FLAG_CHARGEING || TEST_AUTO_FLAG) {//chb modify for VFOZBAUBQ-179 2015-11-9
             KeyBoardUtils.closeKeybord(mEditTestTimesEditText, mContext);//close keypad
             mCurrentTestTimes = 0;
             TEST_OVER_FLAG = false;
@@ -482,7 +514,9 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
             mReportButton.setVisibility(View.VISIBLE);
             //mStopButton.setVisibility(View.VISIBLE);
             mStopButton.setText(R.string.str_stop);
-
+            if (TEST_AUTO_FLAG) {
+                mStopButton.setClickable(false);
+            }
             /**get the set test times to view*/
             String allTestTimes = mEditTestTimesEditText.getText().toString();
             mAllTestTimesTextView.setText(allTestTimes);
@@ -492,7 +526,7 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
 
 
             /**start first test item LCD test*/
-            factoryAutoTest.handler.sendEmptyMessage(FactoryAutoTest.MSG_LCD_TEST);
+            factoryAutoTest.handler.sendEmptyMessage(MSG_LCD_TEST);
             UpdateCurTimes();
         } else {
             Toaster.showToast(mContext, mContext.getString(R.string.test_start_tip));
@@ -543,6 +577,8 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
             Toaster.showToast(factoryAutoTest, FactoryAutoTest.mContext.getString(R.string.str_test_over));
             mTest8.setTextColor(Color.BLACK);
             mStopButton.setText(R.string.str_test_stop);
+
+            mStopButton.setClickable(true);
             mStopButton.setTextColor(Color.GREEN);
             mAllTestResult.setVisibility(View.VISIBLE);
             SetTestItemColor();
@@ -621,11 +657,9 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
     @Override
     public void onPositiveClick() {
         FactoryAutoTest.this.finish();
-        mStopButton.setClickable(false);
     }
 
     @Override
     public void onNegativeClick() {
-        mStopButton.setClickable(true);
     }
 }

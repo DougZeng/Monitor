@@ -170,7 +170,6 @@ public class CameraTest {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             // TODO Auto-generated method stub
-
         }
     }
 

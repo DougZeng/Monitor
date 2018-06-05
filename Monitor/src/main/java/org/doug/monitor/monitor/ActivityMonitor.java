@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -30,7 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
@@ -57,6 +56,7 @@ import android.widget.ToggleButton;
 import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.about.ActivityAbout;
+import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.help.ActivityHelp;
 import org.doug.monitor.base.Constans;
 import org.doug.monitor.R;
@@ -71,7 +71,7 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
     private int intervalRead, intervalUpdate, intervalWidth, statusBarHeight, navigationBarHeight, animDuration = 200,
             settingsHeight, orientation, processesMode, graphicMode;
     private float sD;
-    private SharedPreferences mPrefs;
+    //    private SharedPreferences mPrefs;
     private FrameLayout mLSettings, mLGraphicSurface, mCloseSettings;
     private LinearLayout mLParent, mLTopBar, mLMenu, mLProcessContainer, mLFeedback, mLWelcome,
             mLCPUTotal, mLCPUAM,
@@ -103,10 +103,11 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                 mHandlerVG.post(drawRunnableGraphic);
 
                 setTextLabelCPU(null, mTVCPUTotalP, mSR.getCPUTotalP());
-                if (processesMode == Constans.processesModeShowCPU)
+                if (processesMode == Constans.processesModeShowCPU) {
                     setTextLabelCPU(null, mTVCPUAMP, mSR.getCPUAMP());
-                else setTextLabelCPU(null, mTVCPUAMP, null, mSR.getMemoryAM());
-
+                } else {
+                    setTextLabelCPU(null, mTVCPUAMP, null, mSR.getMemoryAM());
+                }
                 setTextLabelMemory(mTVMemUsed, mTVMemUsedP, mSR.getMemUsed());
                 setTextLabelMemory(mTVMemAvailable, mTVMemAvailableP, mSR.getMemAvailable());
                 setTextLabelMemory(mTVMemFree, mTVMemFreeP, mSR.getMemFree());
@@ -120,7 +121,7 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                 }
             }
         }
-    }, drawRunnableGraphic = new Runnable() { // http://stackoverflow.com/questions/18856376/android-why-cant-i-create-a-handler-in-new-thread
+    }, drawRunnableGraphic = new Runnable() {
         @Override
         public void run() {
             mThread = new Thread() {
@@ -133,12 +134,10 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                             canvasLocked = true;
                             mVG.onDrawCustomised(canvas, mThread);
 
-                            // https://github.com/AntonioRedondo/AnotherMonitor/issues/1
-                            // http://stackoverflow.com/questions/23893813/canvas-restore-causing-underflow-exception-in-very-rare-cases
                             try {
                                 mVG.unlockCanvasAndPost(canvas);
                             } catch (IllegalStateException e) {
-                                Logger.e(e.getMessage(), "Activity main: ");
+                                Logger.e(e.getMessage(), "Activity Monitor: ");
                             }
 
                             canvasLocked = false;
@@ -197,8 +196,9 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                 tempIntent.putExtra(Constans.screenRotated, true);
                 onActivityResult(1, 1, tempIntent);
                 tempIntent = null;
-            } else onActivityResult(1, 1, null);
-
+            } else {
+                onActivityResult(1, 1, null);
+            }
             if (Build.VERSION.SDK_INT >= 16) {
                 mLProcessContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @SuppressWarnings("deprecation")
@@ -253,19 +253,31 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
         startService(new Intent(this, ServiceReader.class));
         setContentView(R.layout.activity_monitor);
 
-        mPrefs = getSharedPreferences(getString(R.string.app_name) + Constans.prefs, MODE_PRIVATE);
-        intervalRead = mPrefs.getInt(Constans.intervalRead, Constans.defaultIntervalUpdate);
-        intervalUpdate = mPrefs.getInt(Constans.intervalUpdate, Constans.defaultIntervalUpdate);
-        intervalWidth = mPrefs.getInt(Constans.intervalWidth, Constans.defaultIntervalWidth);
+//        mPrefs = getSharedPreferences(getString(R.string.app_name) + Constans.prefs, MODE_PRIVATE);
+        intervalRead = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.intervalRead, Constans.defaultIntervalUpdate);
+        intervalUpdate = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.intervalUpdate, Constans.defaultIntervalUpdate);
+        intervalWidth = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.intervalWidth, Constans.defaultIntervalWidth);
+//        intervalRead = mPrefs.getInt(Constans.intervalRead, Constans.defaultIntervalUpdate);
+//        intervalUpdate = mPrefs.getInt(Constans.intervalUpdate, Constans.defaultIntervalUpdate);
+//        intervalWidth = mPrefs.getInt(Constans.intervalWidth, Constans.defaultIntervalWidth);
 
-        cpuTotal = mPrefs.getBoolean(Constans.cpuTotal, true);
-        cpuAM = mPrefs.getBoolean(Constans.cpuAM, true);
+        cpuTotal = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.cpuTotal, true);
+        cpuAM = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.cpuAM, true);
+//        cpuTotal = mPrefs.getBoolean(Constans.cpuTotal, true);
+//        cpuAM = mPrefs.getBoolean(Constans.cpuAM, true);
 
-        memUsed = mPrefs.getBoolean(Constans.memUsed, true);
-        memAvailable = mPrefs.getBoolean(Constans.memAvailable, true);
-        memFree = mPrefs.getBoolean(Constans.memFree, false);
-        cached = mPrefs.getBoolean(Constans.cached, false);
-        threshold = mPrefs.getBoolean(Constans.threshold, true);
+
+        memUsed = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.memUsed, true);
+        memAvailable = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.memAvailable, true);
+        memFree = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.memFree, true);
+        cached = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.cached, true);
+        threshold = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.threshold, true);
+
+//        memUsed = mPrefs.getBoolean(Constans.memUsed, true);
+//        memAvailable = mPrefs.getBoolean(Constans.memAvailable, true);
+//        memFree = mPrefs.getBoolean(Constans.memFree, false);
+//        cached = mPrefs.getBoolean(Constans.cached, false);
+//        threshold = mPrefs.getBoolean(Constans.threshold, true);
 
         res = getResources();
         sD = res.getDisplayMetrics().density;
@@ -280,14 +292,20 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
 
         mVG = (ViewGraphic) findViewById(R.id.ANGraphic);
 
-        graphicMode = mPrefs.getInt(Constans.graphicMode, Constans.graphicModeShowMemory);
+
+        graphicMode = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.graphicMode, Constans.graphicModeShowMemory);
+//        graphicMode = mPrefs.getInt(Constans.graphicMode, Constans.graphicModeShowMemory);
+
         mVG.setGraphicMode(graphicMode);
         mBHide = (ToggleButton) findViewById(R.id.BHideMemory);
         mBHide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 graphicMode = graphicMode == Constans.graphicModeShowMemory ? Constans.graphicModeHideMemory : Constans.graphicModeShowMemory;
-                mPrefs.edit().putInt(Constans.graphicMode, graphicMode).apply();
+
+                SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.graphicMode, graphicMode);
+//                mPrefs.edit().putInt(Constans.graphicMode, graphicMode).apply();
+
                 mVG.setGraphicMode(graphicMode);
                 mBHide.setChecked(graphicMode == Constans.graphicModeShowMemory ? false : true);
                 mHandlerVG.post(drawRunnableGraphic);
@@ -295,14 +313,19 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
         });
         mBHide.setChecked(graphicMode == Constans.graphicModeShowMemory ? false : true);
 
-        processesMode = mPrefs.getInt(Constans.processesMode, Constans.processesModeShowCPU);
+        processesMode = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.processesMode, Constans.processesModeShowCPU);
+//        processesMode = mPrefs.getInt(Constans.processesMode, Constans.processesModeShowCPU);
+
         mVG.setProcessesMode(processesMode);
         mBMemory = (Button) findViewById(R.id.BMemory);
         mBMemory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 processesMode = processesMode == Constans.processesModeShowCPU ? Constans.processesModeShowMemory : Constans.processesModeShowCPU;
-                mPrefs.edit().putInt(Constans.processesMode, processesMode).apply();
+
+                SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.processesMode, processesMode);
+//                mPrefs.edit().putInt(Constans.processesMode, processesMode).apply();
+
                 mBMemory.setText(processesMode == 0 ? getString(R.string.w_main_memory) : getString(R.string.p_cpuusage));
                 mVG.setProcessesMode(processesMode);
                 mHandlerVG.post(drawRunnableGraphic);
@@ -378,10 +401,12 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
         mLButtonRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mSR.isRecording())
+                if (mSR.isRecording()) {
                     mSR.stopRecord();
-                else mSR.startRecord();
-                mHandlerVG.post(drawRunnableGraphic);
+                } else {
+                    mSR.startRecord();
+                    mHandlerVG.post(drawRunnableGraphic);
+                }
             }
         });
         mLButtonRecord.setOnLongClickListener(new View.OnLongClickListener() {
@@ -549,11 +574,11 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
 /*				if (drawThread == null) {
-					drawThread = new Thread(drawRunnable3, Constans.drawThread);
+                    drawThread = new Thread(drawRunnable3, Constans.drawThread);
 				}
 				drawThread.start();*/
 /*				mVG.getSurfaceTexture().setOnFrameAvailableListener( new SurfaceTexture.OnFrameAvailableListener() {
-					@Override
+                    @Override
 					public void onFrameAvailable(SurfaceTexture surfaceTexture) {
 						updateLayer();
 						invalidate();
@@ -570,7 +595,7 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
             @Override
             public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
 /*				try {
-					drawThread.interrupt();
+                    drawThread.interrupt();
 					drawThread = null;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -862,11 +887,16 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                 mHandlerVG.post(drawRunnableGraphic);
                 mHandler.removeCallbacks(drawRunnable);
                 mHandler.post(drawRunnable);
-                mPrefs.edit()
-                        .putInt(Constans.intervalRead, intervalRead)
-                        .putInt(Constans.intervalUpdate, intervalUpdate)
-                        .putInt(Constans.intervalWidth, intervalWidth)
-                        .apply();
+
+                SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.intervalRead, intervalRead);
+                SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.intervalUpdate, intervalUpdate);
+                SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.intervalWidth, intervalWidth);
+
+//                mPrefs.edit()
+//                        .putInt(Constans.intervalRead, intervalRead)
+//                        .putInt(Constans.intervalUpdate, intervalUpdate)
+//                        .putInt(Constans.intervalWidth, intervalWidth)
+//                        .apply();
             }
         });
 
@@ -899,8 +929,14 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
         }
 
 //		if (true) {
-        if (mPrefs.getBoolean(Constans.welcome, true)) {
-            mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
+        boolean welcome = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.welcome, true);
+        if (welcome) {
+
+            SharedPreferencesUtils.putToSpfs(this, Constans.welcomeDate, Calendar.getInstance(Locale.CHINA));
+
+//            mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
+
+
             ViewStub v = (ViewStub) findViewById(R.id.VSWelcome);
             if (v != null) { // This is to avoid a null pointer when the second time this code is executed (findViewById() returns the view only once)
                 mLWelcome = (LinearLayout) v.inflate();
@@ -913,7 +949,12 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                 (mLWelcome.findViewById(R.id.BHint)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPrefs.edit().putBoolean(Constans.welcome, false).apply();
+
+                        SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.welcome, false);
+//                        mPrefs.edit().putBoolean(Constans.welcome, false).apply();
+                        if (mLWelcome == null) {
+                            return;
+                        }
                         mLWelcome.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -934,14 +975,26 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
             }
         }
 
-        long time = Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis();
+        long time = Calendar.getInstance(Locale.CHINA).getTimeInMillis();
 
 //		if (true) {
-        if (((float) (time - mPrefs.getLong(Constans.welcomeDate, 1)) / (24 * 60 * 60 * 1000) > 4
-                && mPrefs.getBoolean(Constans.feedbackFirstTime, true))
-                || ((float) (time - mPrefs.getLong(Constans.welcomeDate, 1)) / (24 * 60 * 60 * 1000) > 90)
-                && !mPrefs.getBoolean(Constans.feedbackDone, false)) {
-            mPrefs.edit().putBoolean(Constans.feedbackFirstTime, false).apply();
+        long welcomeData = (long) SharedPreferencesUtils.getFromSpfs(this, Constans.welcomeDate, 1L);
+//        mPrefs.getLong(Constans.welcomeDate, 1)
+
+        boolean feedBackFirstTime = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.feedbackFirstTime, true);
+//        mPrefs.getBoolean(Constans.feedbackFirstTime, true)
+
+        boolean feedBackDone = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.feedbackDone, false);
+//        mPrefs.getBoolean(Constans.feedbackDone, false)
+
+        if (((float) (time - welcomeData) / (24 * 60 * 60 * 1000) > 4
+                && feedBackFirstTime)
+                || ((float) (time - welcomeData) / (24 * 60 * 60 * 1000) > 90)
+                && !feedBackDone) {
+
+            SharedPreferencesUtils.putToSpfs(this, Constans.feedbackFirstTime, false);
+//            mPrefs.edit().putBoolean(Constans.feedbackFirstTime, false).apply();
+
             ViewStub v = (ViewStub) findViewById(R.id.VSFeedback);
             if (v != null) { // This is to avoid a null pointer when the second time this code is executed (findViewById() returns the view only once)
                 mLFeedback = (LinearLayout) v.inflate();
@@ -954,7 +1007,9 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                 (mLFeedback.findViewById(R.id.BFeedbackYes)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPrefs.edit().putBoolean(Constans.feedbackDone, true).apply();
+
+                        SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.feedbackDone, true);
+//                        mPrefs.edit().putBoolean(Constans.feedbackDone, true).apply();
                         try {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constans.marketDetails + getPackageName()))
                                     .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
@@ -975,7 +1030,9 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                 (mLFeedback.findViewById(R.id.BFeedbackDone)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPrefs.edit().putBoolean(Constans.feedbackDone, true).apply();
+                        SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.feedbackDone, true);
+//                        mPrefs.edit().putBoolean(Constans.feedbackDone, true).apply();
+
                         Toaster.showToast(ActivityMonitor.this, getString(R.string.w_main_feedback_done_thanks));
                         mLFeedback.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
                             @Override
@@ -996,7 +1053,9 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                                 mLFeedback = null;
                             }
                         }).setStartDelay(0).alpha(0).translationYBy(-15 * sD);
-                        mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
+
+                        SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.welcomeDate, Calendar.getInstance(Locale.CHINA).getTimeInMillis());
+//                        mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
                         Toaster.showToast(ActivityMonitor.this, getString(R.string.w_main_feedback_no_remind));
                     }
                 });
@@ -1059,17 +1118,23 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
         if (mSR == null)
             return;
 
-        mPrefs.edit()
-                .putBoolean(Constans.cpuTotal, cpuTotal)
-                .putBoolean(Constans.cpuAM, cpuAM)
+        SharedPreferencesUtils.putToSpfs(this, Constans.cpuTotal, cpuTotal);
+        SharedPreferencesUtils.putToSpfs(this, Constans.cpuAM, cpuAM);
+        SharedPreferencesUtils.putToSpfs(this, Constans.memUsed, memUsed);
+        SharedPreferencesUtils.putToSpfs(this, Constans.memAvailable, memAvailable);
+        SharedPreferencesUtils.putToSpfs(this, Constans.memFree, memFree);
+        SharedPreferencesUtils.putToSpfs(this, Constans.cached, cached);
+        SharedPreferencesUtils.putToSpfs(this, Constans.threshold, threshold);
 
-                .putBoolean(Constans.memUsed, memUsed)
-                .putBoolean(Constans.memAvailable, memAvailable)
-                .putBoolean(Constans.memFree, memFree)
-                .putBoolean(Constans.cached, cached)
-                .putBoolean(Constans.threshold, threshold)
-
-                .apply();
+//        mPrefs.edit()
+//                .putBoolean(Constans.cpuTotal, cpuTotal)
+//                .putBoolean(Constans.cpuAM, cpuAM)
+//                .putBoolean(Constans.memUsed, memUsed)
+//                .putBoolean(Constans.memAvailable, memAvailable)
+//                .putBoolean(Constans.memFree, memFree)
+//                .putBoolean(Constans.cached, cached)
+//                .putBoolean(Constans.threshold, threshold)
+//                .apply();
 
         mVG.setParameters(cpuTotal, cpuAM, memUsed, memAvailable, memFree, cached, threshold);
 
@@ -1272,14 +1337,14 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                             Boolean b = (Boolean) process.get(Constans.pSelected);
                             process.put(Constans.pSelected, !b);
                             switchParameterForProcess(process);
-							
+
 							/*Intent intent = new Intent();
-							intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 							intent.setData(Uri.parse("package:" + (String) process.get(Constans.pPackage)));
 							startActivity(intent);*/
-							
+
 							/*// http://stackoverflow.com/questions/2780102/open-another-application-from-your-own-intent
-							Intent i;
+                            Intent i;
 							PackageManager manager = getPackageManager();
 							try {
 								i = manager.getLaunchIntentForPackage((String) process.get(Constans.pPackage));
@@ -1317,7 +1382,9 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                     switchParameterForProcess(process);
 
 //					if (true) {
-                    if (mPrefs.getBoolean(Constans.firstTimeProcesses, true)) {
+                    boolean firstTimeProcess = (boolean) SharedPreferencesUtils.getFromSpfs(this, Constans.firstTimeProcesses, true);
+//                    mPrefs.getBoolean(Constans.firstTimeProcesses, true)
+                    if (firstTimeProcess) {
                         ViewStub v = (ViewStub) findViewById(R.id.VSFirstTimeProcesses);
                         if (v != null) { // This is to avoid a null pointer when the second time this code is executed (findViewById() returns the view only once)
                             mLWelcome = (LinearLayout) v.inflate();
@@ -1331,7 +1398,9 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
                             mLWelcome.findViewById(R.id.BHint).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    mPrefs.edit().putBoolean(Constans.firstTimeProcesses, false).apply();
+
+                                    SharedPreferencesUtils.putToSpfs(ActivityMonitor.this, Constans.firstTimeProcesses, false);
+//                                    mPrefs.edit().putBoolean(Constans.firstTimeProcesses, false).apply();
                                     mLWelcome.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
                                         @Override
                                         public void onAnimationEnd(Animator animation) {
@@ -1429,7 +1498,10 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
     @Override
     public void onBackPressed() {
         if (mLFeedback != null && mLFeedback.getAlpha() != 0) {
-            mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
+
+            SharedPreferencesUtils.putToSpfs(this, Constans.welcomeDate, Calendar.getInstance(Locale.CHINA).getTimeInMillis());
+//            mPrefs.edit().putLong(Constans.welcomeDate, Calendar.getInstance(TimeZone.getTimeZone(Constans.europeLondon)).getTimeInMillis()).apply();
+
             Toaster.showToast(ActivityMonitor.this, getString(R.string.w_main_feedback_no_remind));
             mLFeedback.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
                 @Override
@@ -1441,7 +1513,10 @@ public class ActivityMonitor extends Activity implements ActivityCompat.OnReques
             return;
         }
         if (mLWelcome != null && mLWelcome.getAlpha() != 0) {
-            mPrefs.edit().putBoolean(Constans.welcome, false).apply();
+
+            SharedPreferencesUtils.putToSpfs(this, Constans.welcome, false);
+//            mPrefs.edit().putBoolean(Constans.welcome, false).apply();
+
             mLWelcome.animate().setDuration(animDuration).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {

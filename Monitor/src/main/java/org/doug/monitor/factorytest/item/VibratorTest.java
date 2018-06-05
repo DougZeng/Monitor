@@ -80,7 +80,6 @@ public class VibratorTest {
      * @Description: Vibrator class mainly realize the two vibration modes, one
      * is a vibration only once, the other is a continuous
      * vibration
-     * @author: peisaisai
      */
     public static class VibratorHelper {
         Activity activity;

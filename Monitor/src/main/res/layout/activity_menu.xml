@@ -17,17 +17,6 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="device"
-            android:text="device" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="monitor"
-            android:text="monitor" />
 
         <org.doug.monitor.base.switchbutton.SwitchButton
             android:id="@+id/sb_text_state"
@@ -35,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/custom_text_state_color"
-            android:textSize="16dp"
+            android:textSize="16sp"
             app:kswTextAdjust="-2dp"
             app:kswTextExtra="8dp"
             app:kswTextOff="Off"

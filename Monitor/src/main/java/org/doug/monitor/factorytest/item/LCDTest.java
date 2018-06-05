@@ -84,6 +84,8 @@ public class LCDTest {
         Logger.d("LCDTest test start");
         handler.post(lcdtask);
     }
+
+
 }
 
 	

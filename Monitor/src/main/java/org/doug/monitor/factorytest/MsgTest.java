@@ -14,4 +14,6 @@ public interface MsgTest {
     int MSG_LCD_TEST = 0x100017;
     int MSG_VIBRATOR_TEST = 0x100018;
     int MSG_UPDATE_STATUS = 0x100020;
+
+    int MSG_AUTO_TEST = 0x100021;
 }

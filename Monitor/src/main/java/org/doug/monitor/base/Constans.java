@@ -31,6 +31,7 @@ public class Constans {
     public static final String actionSetIconRecord = "actionSetIconRecord";
     public static final String actionDeadProcess = "actionRemoveProcess";
     public static final String actionFinishActivity = "actionCloseActivity";
+    public static final String actionAutoTest = "actionAutoTest";
 
     public static final String pId = "pId";
     public static final String pName = "pName";
@@ -114,9 +115,15 @@ public class Constans {
     public static final String INIT_Y = "init_y";
     public static final String IS_SHOWN = "is_shown";
 
+    public static final String IS_FIRST_BOOT = "is_first_boot";
+    public static final int DEFAULT_COUNT = 0;
+
 
     public static final String PASS = "Pass";
     public static final String FAIL = "Fail";
 
     public static final int DURATION_DIALOG = 300;
+
+    public static final String DEFAULT_TEST_TIMES = "1500";
+
 }

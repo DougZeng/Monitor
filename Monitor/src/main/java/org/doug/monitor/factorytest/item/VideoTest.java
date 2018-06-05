@@ -56,7 +56,6 @@ public class VideoTest {
 
                         Logger.d("video test over");
                         Logger.d("video test time" + mVideoTestTime);
-                        //Logset.logd("FactoryAuto", "All test time"+FactoryAutoTest.mALLTestTime);
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
