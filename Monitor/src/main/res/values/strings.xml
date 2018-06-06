@@ -234,4 +234,8 @@
     <string name="test_start_tip">The current power is lower than 10%,\n please insert the charger,\n or it can not be tested.</string>
 
 
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="reset">Random Reset</string>
+    <string name="toggle_snackbar">Toggle Snackbar</string>
 </resources>

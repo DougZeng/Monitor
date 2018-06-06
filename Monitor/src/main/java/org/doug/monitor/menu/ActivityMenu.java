@@ -13,6 +13,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.doug.monitor.base.Constans;
+import org.doug.monitor.base.banner.test.SampleActivity;
 import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.device.ActivityDevice;
 import org.doug.monitor.monitor.ActivityMonitor;
@@ -38,7 +39,6 @@ public class ActivityMenu extends AppCompatActivity implements BaseQuickAdapter.
         super.onCreate(savedInstanceState);
 
 
-
         int bootCount = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.IS_FIRST_BOOT, Constans.DEFAULT_COUNT);
         if (bootCount == 0) {
             SharedPreferencesUtils.putToSpfs(this, Constans.IS_FIRST_BOOT, 1);
@@ -54,6 +54,7 @@ public class ActivityMenu extends AppCompatActivity implements BaseQuickAdapter.
         deviceItems.add(new DeviceItem("网络", "带宽上下行测试", false));
 //        deviceItems.add(new DeviceItem("定时开关机", "众云", false));
         deviceItems.add(new DeviceItem("老化测试", "24H", false));
+//        deviceItems.add(new DeviceItem("banner", "banner", false));
         CommonAdapter adapter = new CommonAdapter(deviceItems);
 
         adapter.setOnItemClickListener(this);
@@ -77,6 +78,8 @@ public class ActivityMenu extends AppCompatActivity implements BaseQuickAdapter.
         } else if (position == 3) {
 //            intent.setClass(this, ActivityTimerSwitch.class);
             intent.setClass(this, FactoryAutoTest.class);
+        } else if (position == 4) {
+//            intent.setClass(this, SampleActivity.class);
         }
         startActivity(intent);
     }

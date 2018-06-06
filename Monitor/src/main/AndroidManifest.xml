@@ -94,6 +94,11 @@
             android:name=".base.bluetooth.SampleActivity"
             android:launchMode="singleTask" />
 
+
+        <!--测试banner-->
+        <activity android:name=".base.banner.test.SampleActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <service android:name=".monitor.ServiceReader" />
 
         <service
