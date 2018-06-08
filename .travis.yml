@@ -18,3 +18,8 @@ script:
     skip_cleanup: true
     on:
       tags: true
+
+
+notifications:
+  email:
+  - apples398@gmail.com
