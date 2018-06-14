@@ -126,4 +126,26 @@ public class Constans {
 
     public static final String DEFAULT_TEST_TIMES = "1500";
 
+    public static final String TEST_ASSEMBLY_0 = "assembly_external";
+    public static final String TEST_ASSEMBLY_1 = "assembly_camera";
+    public static final String TEST_ASSEMBLY_2 = "assembly_scanner";
+    public static final String TEST_ASSEMBLY_3 = "assembly_touch";
+    public static final String TEST_ASSEMBLY_4 = "assembly_auto_touch";
+    public static final String TEST_ASSEMBLY_5 = "assembly_audio";
+    public static final String TEST_ASSEMBLY_6 = "assembly_ethernet";
+
+    public static final String TEST_AGING_0 = "aging_result";
+
+    public static final String TEST_PERFORMANCE_0 = "performance_displayVersion";
+    public static final String TEST_PERFORMANCE_1 = "performance_serial";
+    public static final String TEST_PERFORMANCE_2 = "performance_eth0";
+    public static final String TEST_PERFORMANCE_3 = "performance_external";
+    public static final String TEST_PERFORMANCE_4 = "performance_camera";
+    public static final String TEST_PERFORMANCE_5 = "performance_scanner";
+    public static final String TEST_PERFORMANCE_6 = "performance_touch";
+    public static final String TEST_PERFORMANCE_7 = "performance_auto_touch";
+    public static final String TEST_PERFORMANCE_8 = "performance_audio";
+    public static final String TEST_PERFORMANCE_9 = "performance_ethernet";
+    public static final String TEST_PERFORMANCE_10 = "performance_wifi";
+    public static final String TEST_PERFORMANCE_11 = "performance_factory_mode";
 }

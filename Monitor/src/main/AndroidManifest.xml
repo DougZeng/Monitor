@@ -32,6 +32,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 
     <application
         android:name=".base.App"
@@ -40,13 +42,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
+
+        <activity android:name=".FlashActivity">
+
+        </activity>
+
         <activity
             android:name=".menu.ActivityMenu"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:launchMode="singleTask">
+
         </activity>
 
         <activity
@@ -96,8 +100,32 @@
 
 
         <!--测试banner-->
-        <activity android:name=".base.banner.test.SampleActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".base.banner.test.SampleActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".TouchActivity"
+            android:launchMode="singleTask">
+
+        </activity>
+        <activity android:name=".AssemblyTestActivity" />
+        <activity android:name=".AgingTestActivity" />
+        <activity android:name=".PerformanceTestActivity" />
+        <activity
+            android:name=".base.networktools.NetworktoolsTestActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".base.guid.test.GuidActivity">
+
+        </activity>
+        <activity android:name=".base.util.ToolScannerTestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
 
         <service android:name=".monitor.ServiceReader" />
 

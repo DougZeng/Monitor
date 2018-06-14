@@ -211,7 +211,7 @@
     <string name="str_start">开始</string>
     <string name="str_curtesttimes">当前次数:</string>
     <string name="str_alltesttimes">总共次数:</string>
-    <string name="str_defaulttimes">500</string>
+    <string name="str_defaulttimes">1500</string>
     <string name="str_functionover">测试完成</string>
     <string name="str_stop">停止测试</string>
     <string name="str_report">查看报告</string>
@@ -247,4 +247,12 @@
         <item>Dynamic Adapter</item>
         <item>Reset Adapter</item>
     </string-array>
+
+    <string name="hint_ip_address">IP Address or Hostname</string>
+    <string name="ping">Ping</string>
+    <string name="wol">Wake-On-Lan</string>
+    <string name="port_scan">Port Scan</string>
+    <string name="github_page">Github</string>
+    <string name="github_url">https://github.com/stealthcopter/AndroidNetworkTools</string>
+    <string name="subnet">Subnet Devices</string>
 </resources>

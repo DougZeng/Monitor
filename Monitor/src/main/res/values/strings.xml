@@ -209,7 +209,7 @@
     <string name="str_start">Start</string>
     <string name="str_curtesttimes">CURRENT:</string>
     <string name="str_alltesttimes">ALL:</string>
-    <string name="str_defaulttimes">500</string>
+    <string name="str_defaulttimes">1500</string>
     <string name="str_functionover">Test Over</string>
     <string name="str_stop">Stop Test</string>
     <string name="str_report">View Report</string>
@@ -238,4 +238,11 @@
     <string name="remove">Remove</string>
     <string name="reset">Random Reset</string>
     <string name="toggle_snackbar">Toggle Snackbar</string>
+
+    <string name="hint_ip_address">IP Address or Hostname</string>
+    <string name="ping">Ping</string>
+    <string name="wol">Wake-On-Lan</string>
+    <string name="port_scan">Port Scan</string>
+    <string name="github_page">Github</string>
+    <string name="subnet">Subnet Devices</string>
 </resources>

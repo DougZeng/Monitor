@@ -381,6 +381,11 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
 
         resultCount = 0;
 
+
+        Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
+
+        handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, 3000);
+        Logger.d("3s later will enter factory auto test!");
     }
 
     /***/
@@ -392,20 +397,20 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = getIntent();
-        if (intent != null) {
-            String action = intent.getAction();
-            if (!TextUtils.isEmpty(action) && action.equals(Constans.actionAutoTest)) {
-                TEST_AUTO_FLAG = true;
-                mEditTestTimesEditText.setText(Constans.DEFAULT_TEST_TIMES);
-                mEditTestTimesEditText.setEnabled(false);
-                mEditTestTimesEditText.setFocusable(false);
-                Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
-
-                handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, 3000);
-                Logger.d("3s later will enter factory auto test!");
-            }
-        }
+//        Intent intent = getIntent();
+//        if (intent != null) {
+//            String action = intent.getAction();
+//            if (!TextUtils.isEmpty(action) && action.equals(Constans.actionAutoTest)) {
+//                TEST_AUTO_FLAG = true;
+//                mEditTestTimesEditText.setText(Constans.DEFAULT_TEST_TIMES);
+//                mEditTestTimesEditText.setEnabled(false);
+//                mEditTestTimesEditText.setFocusable(false);
+//                Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
+//
+//                handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, 3000);
+//                Logger.d("3s later will enter factory auto test!");
+//            }
+//        }
     }
 
     @Override
