@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -109,6 +110,28 @@ public class ScreenUtils {
         view.destroyDrawingCache();
         return bp;
 
+    }
+
+    /**
+     * 隐藏虚拟按键，并且全屏
+     */
+    public static void hideBottomUIMenu(Activity activity) {
+        //隐藏虚拟按键，并且全屏
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
+            View v = activity.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            //for new api versions.
+            View decorView = activity.getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+    }
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
 }

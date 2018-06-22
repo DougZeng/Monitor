@@ -282,4 +282,8 @@
     <color name="lightblue">#ADD8E6</color><!--亮蓝色 -->
     <!--<color name="blue">#000088</color>&lt;!&ndash;蓝色 &ndash;&gt;-->
     <!--<color name="black">#000000</color>&lt;!&ndash;黑色 &ndash;&gt;-->
+
+    <color name="spinner_bg">#333244</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

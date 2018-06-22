@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<org.doug.monitor.base.circleprogressbar.CountDownView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/countdown_timer_second"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:gravity="center"
+    android:textColor="#88000000"
+    android:textSize="36sp"
+    tools:showIn="@layout/activity_serialno" />

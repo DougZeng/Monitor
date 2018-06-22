@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <org.doug.monitor.base.circleprogressbar.CountDownView
+        android:id="@+id/countdown_timer_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="#88000000"
+        android:textSize="36sp"
+        tools:showIn="@layout/activity_visual_inspection" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="visualInspection"
+        android:textSize="36sp"
+        android:visibility="gone" />
+
+    <org.doug.monitor.base.switchbutton.SwitchButton
+        android:id="@+id/sb_text_state"
+        style="@style/SwitchButtonStyle"
+        android:layout_width="337dp"
+        android:layout_height="171dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="@color/custom_text_state_color"
+        android:textSize="22sp"
+        app:kswTextAdjust="-2dp"
+        app:kswTextExtra="8dp"
+        app:kswTextOff="Fail"
+        app:kswTextOn="Pass"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/countdown_timer_second" />
+
+</android.support.constraint.ConstraintLayout>

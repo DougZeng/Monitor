@@ -14,6 +14,9 @@ apply plugin: 'com.google.protobuf'
 repositories {
     jcenter()
     google()
+    maven {
+        url  "http://dl.bintray.com/fotoapparat/fotoapparat"
+    }
 }
 
 android {
@@ -23,8 +26,8 @@ android {
         applicationId 'org.doug.monitor'
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 180605
-        versionName "18.6.5"
+        versionCode 180622
+        versionName "18.6.22"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 //        multiDexEnabled true
     }
@@ -112,4 +115,11 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     implementation files('libs/core-3.2.1.jar')
+
 }
+
+//android.applicationVariants.all { variant ->
+//    variant.outputs.all {
+//        outputFileName = "${variant.applicationId}_${variant.versionName}_${variant.versionCode}.apk"
+//    }
+//}

@@ -253,6 +253,28 @@
     <string name="wol">Wake-On-Lan</string>
     <string name="port_scan">Port Scan</string>
     <string name="github_page">Github</string>
-    <string name="github_url">https://github.com/stealthcopter/AndroidNetworkTools</string>
     <string name="subnet">Subnet Devices</string>
+    <string name="menu_test_result">测试结果</string>
+	
+	<string name="cancel_label">Cancel</string>
+    <string name="ok_label">Ok</string>
+
+    <string name="settings_video_quality_title">Video size %s</string>
+    <string name="settings_photo_quality_title">Photo size</string>
+
+    <!-- Preview Activity -->
+    <string name="preview_controls_confirm">Save</string>
+    <string name="preview_controls_retake">Repeat</string>
+    <string name="preview_controls_cancel">Cancel</string>
+    <string name="preview_controls_crop">Crop</string>
+    <string name="preview_controls_original_ratio_label">Original</string>
+
+    <string name="image_play_pause">播放/暂停</string>
+    <string name="image_replay_button">重播</string>
+    <string name="line_visualizer">Line Visualizer</string>
+    <string name="bar_visualizer">Bar Visualizer</string>
+    <string name="circle_visualizer">Circle Visualizer</string>
+    <string name="circle_bar_visualizer">Circle Bar Visualizer</string>
+    <string name="line_bar_visualizer">Line Bar Visualizer</string>
+    <string name="activity_with_service">Activity With Service</string>
 </resources>

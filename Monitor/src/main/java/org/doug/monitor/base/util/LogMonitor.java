@@ -29,7 +29,7 @@ public class LogMonitor {
             for (StackTraceElement s : stackTrace) {
                 sb.append(s.toString() + "\n");
             }
-            Logger.d("LogMonitor", sb.toString());
+//            Logger.d("LogMonitor", sb.toString());
         }
     };
 

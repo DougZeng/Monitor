@@ -1,7 +1,6 @@
 package org.doug.monitor.factorytest;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.graphics.Color;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -28,7 +26,8 @@ import android.widget.VideoView;
 import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.R;
-import org.doug.monitor.base.App;
+import org.doug.monitor.ageing.Ageing;
+import org.doug.monitor.base.BaseActivity;
 import org.doug.monitor.base.Constans;
 import org.doug.monitor.base.util.AnrMonitor;
 import org.doug.monitor.base.util.SharedPreferencesUtils;
@@ -48,7 +47,7 @@ import org.doug.monitor.factorytest.view.ListViewForReport;
 /**
  *
  */
-public class FactoryAutoTest extends Activity implements Toaster.DialogCallback, MsgTest {
+public class FactoryAutoTest extends BaseActivity implements Toaster.DialogCallback, MsgTest {
 
     private static String TAG = FactoryAutoTest.class.getSimpleName();
 
@@ -290,7 +289,7 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
     /**
      * the  test Items name and color.
      */
-    public void SetTestName() {
+    public void setTestName() {
         mTest1 = (TextView) findViewById(R.id.txt_test1);
         mTest2 = (TextView) findViewById(R.id.txt_test2);
         mTest3 = (TextView) findViewById(R.id.txt_test3);
@@ -362,26 +361,27 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
         factoryAutoTest = this;
 
         /**set Window */
-        Window window = getWindow();
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//        Window window = getWindow();
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_factory_test);
-
+        setTitle("老化测试");
+        setBackBtn();
         //View view = findViewById(R.layout.activity_factory_test);
-        View currentView = getWindow().getDecorView();
-        currentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN); // forbid status bar pull-down  SYSTEM_UI_FLAG_IMMERSIVE_GESTURE_ISOLATED
+//        View currentView = getWindow().getDecorView();
+//        currentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN); // forbid status bar pull-down  SYSTEM_UI_FLAG_IMMERSIVE_GESTURE_ISOLATED
 
         getView();
-        SetTestName();
+        setTestName();
         /**Register broadcast filters*/
         IntentFilter intentBatteryFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(mBatteryReceiver, intentBatteryFilter);
 
         resultCount = 0;
 
-
+        mEditTestTimesEditText.setText(Constans.DEFAULT_TEST_TIMES);
         Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
 
         handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, 3000);
@@ -469,7 +469,7 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
         /**unregister broadcast Filters*/
         unregisterReceiver(mBatteryReceiver);
 
-        if (toaster == null || toaster.onBackPressed()) {
+        if (toaster != null) {
             toaster.onBackPressed();
         }
 
@@ -661,10 +661,15 @@ public class FactoryAutoTest extends Activity implements Toaster.DialogCallback,
 
     @Override
     public void onPositiveClick() {
+        SharedPreferencesUtils.putToSpfs(FactoryAutoTest.this, Constans.TEST_AGING_0, 1);
+        Intent intent = new Intent();
+        intent.putExtra(Constans.TEST_AGING, new Ageing(1));
+        setResult(RESULT_OK, intent);
         FactoryAutoTest.this.finish();
     }
 
     @Override
     public void onNegativeClick() {
+        SharedPreferencesUtils.putToSpfs(FactoryAutoTest.this, Constans.TEST_AGING_0, 0);
     }
 }

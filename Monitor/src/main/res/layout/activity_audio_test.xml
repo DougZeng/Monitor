@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="audio test"
+        android:textSize="36sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="line"
+            android:text="@string/line_visualizer"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="bar"
+            android:text="@string/bar_visualizer"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="circle"
+            android:text="@string/circle_visualizer"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="circleBar"
+            android:text="@string/circle_bar_visualizer"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="lineBar"
+            android:text="@string/line_bar_visualizer"
+            android:textColor="@color/white" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="service"
+            android:text="@string/activity_with_service"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <org.doug.monitor.base.circleprogressbar.CountDownView
+            android:id="@+id/countdown_timer_second"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="#88000000"
+            android:textSize="36sp"
+            tools:showIn="@layout/activity_audio_test" />
+
+        <org.doug.monitor.base.visualizer.BarVisualizer
+            android:id="@+id/visualizer"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/countdown_timer_second" />
+
+        <include layout="@layout/layout_audio_buttons" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

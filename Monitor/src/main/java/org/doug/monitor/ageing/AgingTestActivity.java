@@ -1,8 +1,10 @@
-package org.doug.monitor;
+package org.doug.monitor.ageing;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
+import org.doug.monitor.R;
 
 /**
  * Created by wesine on 2018/6/14.

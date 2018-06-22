@@ -8,6 +8,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.orhanobut.logger.Logger;
+
 /**
  * Created by wesine on 2018/6/14.
  */
@@ -47,6 +49,7 @@ public class TouchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             touchPaints[i] = new Paint();
             touchPaints[i].setColor(colors[i]);
         }
+
     }
 
     @Override
@@ -76,11 +79,13 @@ public class TouchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                     int y = (int) event.getY(i);
                     drawCircle(x, y, touchPaints[id], c);
                 }
+
             }
             getHolder().unlockCanvasAndPost(c);
         }
         return true;
     }
+
 
     private void drawCrosshairsAndText(int x, int y, Paint paint, int ptr, int id, Canvas c) {
         c.drawLine(0, y, width, y, paint);
@@ -89,10 +94,12 @@ public class TouchSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         c.drawText("x" + ptr + "=" + x, 10 * scale, textY, textPaint);
         c.drawText("y" + ptr + "=" + y, 70 * scale, textY, textPaint);
         c.drawText("id" + ptr + "=" + id, width - 55 * scale, textY, textPaint);
+
+        Logger.d("id = " + id + " " + "x = " + x + " " + "y = " + y);
     }
 
     private void drawCircle(int x, int y, Paint paint, Canvas c) {
-        c.drawCircle(x, y, 10 * scale, paint);
+        c.drawCircle(x, y, 1 * scale, paint);
     }
 
     @Override
