@@ -18,7 +18,7 @@ import org.doug.monitor.base.util.ScreenUtils;
  * Created by wesine on 2018/6/15.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity {
     private TextView title;
     private ImageView back;
     protected final String TAG = this.getClass().getSimpleName();

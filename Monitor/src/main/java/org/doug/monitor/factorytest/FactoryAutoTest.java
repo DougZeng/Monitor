@@ -382,9 +382,9 @@ public class FactoryAutoTest extends BaseActivity implements Toaster.DialogCallb
         resultCount = 0;
 
         mEditTestTimesEditText.setText(Constans.DEFAULT_TEST_TIMES);
-        Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
+//        Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
 
-        handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, 3000);
+        handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, Constans.DELAYMILLIS);
         Logger.d("3s later will enter factory auto test!");
     }
 
@@ -397,20 +397,6 @@ public class FactoryAutoTest extends BaseActivity implements Toaster.DialogCallb
     @Override
     protected void onStart() {
         super.onStart();
-//        Intent intent = getIntent();
-//        if (intent != null) {
-//            String action = intent.getAction();
-//            if (!TextUtils.isEmpty(action) && action.equals(Constans.actionAutoTest)) {
-//                TEST_AUTO_FLAG = true;
-//                mEditTestTimesEditText.setText(Constans.DEFAULT_TEST_TIMES);
-//                mEditTestTimesEditText.setEnabled(false);
-//                mEditTestTimesEditText.setFocusable(false);
-//                Toaster.showToast(this, "3秒后，将进入工厂自动化测试！");
-//
-//                handler.sendEmptyMessageDelayed(MsgTest.MSG_AUTO_TEST, 3000);
-//                Logger.d("3s later will enter factory auto test!");
-//            }
-//        }
     }
 
     @Override

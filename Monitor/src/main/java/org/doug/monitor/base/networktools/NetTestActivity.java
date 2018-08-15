@@ -1,5 +1,9 @@
 package org.doug.monitor.base.networktools;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
+
 import org.doug.monitor.R;
 import org.doug.monitor.base.BaseActivity;
 import org.doug.monitor.base.Constans;
@@ -16,18 +22,19 @@ import org.doug.monitor.base.circleprogressbar.CountDownView;
 import org.doug.monitor.base.networktools.ping.PingResult;
 import org.doug.monitor.base.networktools.ping.PingStats;
 import org.doug.monitor.base.networktools.subnet.Device;
+import org.doug.monitor.base.util.DeviceUtil;
 import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.base.util.Toaster;
-import org.doug.monitor.displayVersion.DisplayVersionActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 
 /**
  * Created by wesine on 2018/6/14.
  */
 
-public class NetworktoolsTestActivity extends BaseActivity implements CountDownView.OnTimeCompleteListener {
+public class NetTestActivity extends BaseActivity implements CountDownView.OnTimeCompleteListener {
 
     private TextView resultText;
     private EditText editIpAddress;
@@ -44,17 +51,23 @@ public class NetworktoolsTestActivity extends BaseActivity implements CountDownV
             if (msg != null) {
                 if (msg.what == MSG_2) {
                     cdv_second.start();
-                    Toaster.showToast(NetworktoolsTestActivity.this, "测试倒计时15秒！");
+                    Toaster.showToast(NetTestActivity.this, "测试倒计时" + Constans.TEST_TIME_NETWORK + "秒！");
                     pingButton.performClick();
                 } else if (msg.what == MSG_22) {
                     long packetsLost = (long) msg.obj;
                     tv_pack_lost.setText(String.valueOf(packetsLost));
                 } else if (msg.what == MSG_33) {
-                    SharedPreferencesUtils.putToSpfs(NetworktoolsTestActivity.this, Constans.TEST_ASSEMBLY_6, 1);
-                    SharedPreferencesUtils.putToSpfs(NetworktoolsTestActivity.this, Constans.TEST_PERFORMANCE_9, 1);
-                    SharedPreferencesUtils.putToSpfs(NetworktoolsTestActivity.this, Constans.TEST_PERFORMANCE_10, 1);
+                    if (networkMode.equals(Constans.ACTION_A + 5)) {
+                        SharedPreferencesUtils.putToSpfs(NetTestActivity.this, Constans.TEST_ASSEMBLY_5, Constans.PASS);
+                    } else if (networkMode.equals(Constans.ACTION_A + 6)) {
+                        SharedPreferencesUtils.putToSpfs(NetTestActivity.this, Constans.TEST_ASSEMBLY_6, Constans.PASS);
+                    } else if (networkMode.equals(Constans.ACTION_P + 6)) {
+                        SharedPreferencesUtils.putToSpfs(NetTestActivity.this, Constans.TEST_PERFORMANCE_9, Constans.PASS);
+                    } else if (networkMode.equals(Constans.ACTION_P + 7)) {
+                        SharedPreferencesUtils.putToSpfs(NetTestActivity.this, Constans.TEST_PERFORMANCE_10, Constans.PASS);
+                    }
                     setResult(RESULT_OK);
-                    NetworktoolsTestActivity.this.finish();
+                    NetTestActivity.this.finish();
                 }
             }
             return true;
@@ -72,17 +85,21 @@ public class NetworktoolsTestActivity extends BaseActivity implements CountDownV
         setContentView(R.layout.activity_networktoolstest);
         setTitle("网络测试");
         setBackBtn();
+        initView();
+        initListener();
+        initData();
 
-        tv_network_result = (TextView) findViewById(R.id.tv_network_result);
-        tv_pack_lost = (TextView) findViewById(R.id.tv_pack_lost);
-        tv_min_time = (TextView) findViewById(R.id.tv_min_time);
-        tv_avg_time = (TextView) findViewById(R.id.tv_avg_time);
-        tv_max_time = (TextView) findViewById(R.id.tv_max_time);
-        resultText = (TextView) findViewById(R.id.resultText);
-        editIpAddress = (EditText) findViewById(R.id.editIpAddress);
+    }
 
-        cdv_second = (CountDownView) findViewById(R.id.countdown_timer_second);
-        cdv_second.initTime(15);
+    private String networkMode = "";
+
+    private void initData() {
+
+    }
+
+
+    private void initListener() {
+        cdv_second.initTime(Constans.TEST_TIME_NETWORK);
         cdv_second.setOnTimeCompleteListener(this);
 
 //        InetAddress ipAddress = IPTools.getLocalIPv4Address();
@@ -154,7 +171,18 @@ public class NetworktoolsTestActivity extends BaseActivity implements CountDownV
                 }).start();
             }
         });
+    }
 
+    private void initView() {
+        tv_network_result = (TextView) findViewById(R.id.tv_network_result);
+        tv_pack_lost = (TextView) findViewById(R.id.tv_pack_lost);
+        tv_min_time = (TextView) findViewById(R.id.tv_min_time);
+        tv_avg_time = (TextView) findViewById(R.id.tv_avg_time);
+        tv_max_time = (TextView) findViewById(R.id.tv_max_time);
+        resultText = (TextView) findViewById(R.id.resultText);
+        editIpAddress = (EditText) findViewById(R.id.editIpAddress);
+
+        cdv_second = (CountDownView) findViewById(R.id.countdown_timer_second);
     }
 
     private void appendResultsText(final String text) {
@@ -301,11 +329,60 @@ public class NetworktoolsTestActivity extends BaseActivity implements CountDownV
         cdv_second.onPause();
     }
 
+    public static final String[] NET_TYPE_NAME = {"Ethernet", "WIFI"};
+
+    private String netTypeName = "";
+
     @Override
     protected void onResume() {
         super.onResume();
-        Toaster.showToast(this, "3 秒后开始测试！");
-        handler.sendEmptyMessageDelayed(MSG_2, 3000);
+        ConnectivityManager mConnectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+        if (mNetworkInfo != null) {
+            if (!mNetworkInfo.isAvailable()) {
+                Toaster.showToast(this, "没有网络了！");
+                return;
+            }
+            String typeName = mNetworkInfo.getTypeName();
+            netTypeName = typeName;
+            Logger.d(typeName);
+            Logger.d(mNetworkInfo.toString());
+        }
+
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action)) {
+                networkMode = action;
+                if (action.equals(Constans.ACTION_A + 5)) {
+                    if (!netTypeName.equals(NET_TYPE_NAME[0])) {
+                        DeviceUtil.execLinuxCommand(DeviceUtil.CMD_SETTINGS);
+                    } else {
+                        handler.sendEmptyMessageDelayed(MSG_2, Constans.DELAYMILLIS);
+                    }
+                } else if (action.equals(Constans.ACTION_A + 6)) {
+                    if (!netTypeName.equals(NET_TYPE_NAME[1])) {
+                        DeviceUtil.execLinuxCommand(DeviceUtil.CMD_SETTINGS);
+                    } else {
+                        handler.sendEmptyMessageDelayed(MSG_2, Constans.DELAYMILLIS);
+                    }
+                } else if (action.equals(Constans.ACTION_P + 6)) {
+                    if (!netTypeName.equals(NET_TYPE_NAME[0])) {
+                        DeviceUtil.execLinuxCommand(DeviceUtil.CMD_SETTINGS);
+                    } else {
+                        handler.sendEmptyMessageDelayed(MSG_2, Constans.DELAYMILLIS);
+                    }
+                } else if (action.equals(Constans.ACTION_P + 7)) {
+                    if (!netTypeName.equals(NET_TYPE_NAME[1])) {
+                        DeviceUtil.execLinuxCommand(DeviceUtil.CMD_SETTINGS);
+                    } else {
+                        handler.sendEmptyMessageDelayed(MSG_2, Constans.DELAYMILLIS);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -314,7 +391,7 @@ public class NetworktoolsTestActivity extends BaseActivity implements CountDownV
         String trim = tv_pack_lost.getText().toString().trim();
         if (Integer.valueOf(trim) < 10) {
             tv_network_result.setText("Pass");
-            handler.sendEmptyMessageDelayed(MSG_33, 3000);
+            handler.sendEmptyMessageDelayed(MSG_33, Constans.DELAYMILLIS);
         } else {
             tv_network_result.setText("Fail");
         }

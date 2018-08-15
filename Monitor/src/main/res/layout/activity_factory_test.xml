@@ -208,7 +208,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
             <!-- 测试4 -->
             <org.doug.monitor.factorytest.view.AutoScaleTextView
                 android:id="@+id/txt_test4"
@@ -217,7 +218,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
             <!-- 测试5 -->
             <org.doug.monitor.factorytest.view.AutoScaleTextView
                 android:id="@+id/txt_test5"
@@ -226,7 +228,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
             <!-- 测试6 -->
             <org.doug.monitor.factorytest.view.AutoScaleTextView
                 android:id="@+id/txt_test6"
@@ -235,7 +238,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:visibility="gone" />
             <!-- 测试7 -->
             <org.doug.monitor.factorytest.view.AutoScaleTextView
                 android:id="@+id/txt_test7"
@@ -339,13 +343,13 @@
         android:orientation="horizontal">
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_result"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="TEXT"
-            android:textSize="38sp" />
+            android:textSize="38sp"
+            android:visibility="gone" />
     </LinearLayout>
 
 

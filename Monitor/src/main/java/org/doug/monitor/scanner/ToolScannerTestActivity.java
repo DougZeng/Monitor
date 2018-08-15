@@ -1,9 +1,12 @@
 package org.doug.monitor.scanner;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -14,7 +17,6 @@ import org.doug.monitor.base.circleprogressbar.CountDownView;
 import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.base.util.Toaster;
 import org.doug.monitor.base.util.ToolScanner;
-import org.doug.monitor.displayVersion.DisplayVersionActivity;
 
 /**
  * Created by wesine on 2018/6/14.
@@ -47,8 +49,11 @@ public class ToolScannerTestActivity extends BaseActivity implements ToolScanner
                     cdv_second.start();
                     Toaster.showToast(ToolScannerTestActivity.this, "测试倒计时18秒！");
                 } else if (msg.what == MSG_8) {
-                    SharedPreferencesUtils.putToSpfs(ToolScannerTestActivity.this, Constans.TEST_ASSEMBLY_2, 1);
-                    SharedPreferencesUtils.putToSpfs(ToolScannerTestActivity.this, Constans.TEST_PERFORMANCE_5, 1);
+                    if (scannerMode.equals(Constans.ACTION_A + 2)) {
+                        SharedPreferencesUtils.putToSpfs(ToolScannerTestActivity.this, Constans.TEST_ASSEMBLY_2, Constans.PASS);
+                    } else if (scannerMode.equals(Constans.ACTION_P + 6)) {
+                        SharedPreferencesUtils.putToSpfs(ToolScannerTestActivity.this, Constans.TEST_PERFORMANCE_6, Constans.PASS);
+                    }
                     setResult(RESULT_OK);
                     ToolScannerTestActivity.this.finish();
                 }
@@ -72,6 +77,19 @@ public class ToolScannerTestActivity extends BaseActivity implements ToolScanner
         tv_toolscanner = (TextView) findViewById(R.id.tv_toolScanner);
         toolScanner = new ToolScanner(this);
         sb = new StringBuilder();
+        initData();
+    }
+
+    private String scannerMode = "";
+
+    private void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action)) {
+                scannerMode = action;
+            }
+        }
     }
 
     @Override

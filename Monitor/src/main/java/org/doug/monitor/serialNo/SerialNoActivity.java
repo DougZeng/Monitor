@@ -9,7 +9,6 @@ import org.doug.monitor.base.Constans;
 import org.doug.monitor.base.circleprogressbar.CountDownView;
 import org.doug.monitor.base.util.DeviceUtil;
 import org.doug.monitor.base.util.SharedPreferencesUtils;
-import org.doug.monitor.displayVersion.DisplayVersionActivity;
 
 /**
  * Created by wesine on 2018/6/20.
@@ -43,7 +42,7 @@ public class SerialNoActivity extends BaseActivity implements CountDownView.OnTi
     protected void onResume() {
         super.onResume();
         cdv_second.start();
-        tv_serial_no.setText(DeviceUtil.getSerial());
+        
     }
 
 

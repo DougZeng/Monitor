@@ -119,8 +119,9 @@ public class Constans {
     public static final int DEFAULT_COUNT = 0;
 
 
-    public static final String PASS = "Pass";
-    public static final String FAIL = "Fail";
+    public static final String DEFAULT_NA = "NA";
+    public static final String PASS = "PASS";
+    public static final String FAIL = "FAIL";
 
     public static final int DURATION_DIALOG = 300;
 
@@ -132,9 +133,9 @@ public class Constans {
     public static final String TEST_ASSEMBLY_1 = "assembly_camera";
     public static final String TEST_ASSEMBLY_2 = "assembly_scanner";
     public static final String TEST_ASSEMBLY_3 = "assembly_touch";
-    public static final String TEST_ASSEMBLY_4 = "assembly_auto_touch";
-    public static final String TEST_ASSEMBLY_5 = "assembly_audio";
-    public static final String TEST_ASSEMBLY_6 = "assembly_ethernet";
+    public static final String TEST_ASSEMBLY_4 = "assembly_audio";
+    public static final String TEST_ASSEMBLY_5 = "assembly_ethernet";
+    public static final String TEST_ASSEMBLY_6 = "assembly_wifi";
 
     public static final String TEST_AGING = "aging";
     public static final String TEST_AGING_0 = "aging_factory";
@@ -142,12 +143,13 @@ public class Constans {
     public static final String TEST_PERFORMANCE = "performance";
     public static final String TEST_PERFORMANCE_0 = "performance_displayVersion";
     public static final String TEST_PERFORMANCE_1 = "performance_serial";
-    public static final String TEST_PERFORMANCE_2 = "performance_eth0";
-    public static final String TEST_PERFORMANCE_3 = "performance_visualInspection";
-    public static final String TEST_PERFORMANCE_4 = "performance_camera";
-    public static final String TEST_PERFORMANCE_5 = "performance_scanner";
-    public static final String TEST_PERFORMANCE_6 = "performance_touch";
-    public static final String TEST_PERFORMANCE_7 = "performance_auto_touch";
+    public static final String TEST_PERFORMANCE_2 = "performance_e_mac";
+    public static final String TEST_PERFORMANCE_3 = "performance_w_mac";
+
+    public static final String TEST_PERFORMANCE_4 = "performance_visualInspection";
+    public static final String TEST_PERFORMANCE_5 = "performance_camera";
+    public static final String TEST_PERFORMANCE_6 = "performance_scanner";
+    public static final String TEST_PERFORMANCE_7 = "performance_touch";
     public static final String TEST_PERFORMANCE_8 = "performance_audio";
     public static final String TEST_PERFORMANCE_9 = "performance_ethernet";
     public static final String TEST_PERFORMANCE_10 = "performance_wifi";
@@ -157,4 +159,16 @@ public class Constans {
     public static final String SERIAL = "serialNo";
     public static final String ETH0 = "eth0";
     public static final String WLAN = "wlan";
+
+
+    public static final String ACTION_A = "org.doug.monitor.action.a";
+    public static final String ACTION_P = "org.doug.monitor.action.p";
+
+    public static final int TEST_TIME_TOUCH = 18;
+    public static final int TEST_TIME_AUDIO = 8;
+    public static final int TEST_TIME_NETWORK = 9;
+    public static final int TEST_TIME_VERSION = 12;
+    public static final int TEST_TIME_VISUAL = 12;
+
+    public static final long DELAYMILLIS = 2000;
 }

@@ -11,8 +11,8 @@ public class Performance extends Assembly {
 
     private int displayVersion;
     private int serialNo;
-    private int eth0;
-    private int wifi;
+    private int e_mac;
+    private int w_mac;
 
     public int getDisplayVersion() {
         return displayVersion;
@@ -30,31 +30,24 @@ public class Performance extends Assembly {
         this.serialNo = serialNo;
     }
 
-    public int getEth0() {
-        return eth0;
+    public int getE_mac() {
+        return e_mac;
     }
 
-    public void setEth0(int eth0) {
-        this.eth0 = eth0;
+    public void setE_mac(int e_mac) {
+        this.e_mac = e_mac;
     }
 
-    public int getWifi() {
-        return wifi;
+    public int getW_mac() {
+        return w_mac;
     }
 
-    public void setWifi(int wifi) {
-        this.wifi = wifi;
+    public void setW_mac(int w_mac) {
+        this.w_mac = w_mac;
     }
-
 
     public Performance() {
     }
 
-    public Performance(int visualInspection, int camera, int scanner, int touch, int autoTouch, int audio, int ethernet, int displayVersion, int serialNo, int eth0, int wifi, int factory_mode) {
-        super(visualInspection, camera, scanner, touch, autoTouch, audio, ethernet);
-        this.displayVersion = displayVersion;
-        this.serialNo = serialNo;
-        this.eth0 = eth0;
-        this.wifi = wifi;
-    }
+
 }

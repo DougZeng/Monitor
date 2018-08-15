@@ -11,21 +11,21 @@ public class Assembly extends BaseModel {
     private int camera;
     private int scanner;
     private int touch;
-    private int autoTouch;
     private int audio;
     private int ethernet;
+    private int wifi;
 
     public Assembly() {
     }
 
-    public Assembly(int visualInspection, int camera, int scanner, int touch, int autoTouch, int audio, int ethernet) {
+    public Assembly(int visualInspection, int camera, int scanner, int touch, int audio, int ethernet, int wifi) {
         this.visualInspection = visualInspection;
         this.camera = camera;
         this.scanner = scanner;
         this.touch = touch;
-        this.autoTouch = autoTouch;
         this.audio = audio;
         this.ethernet = ethernet;
+        this.wifi = wifi;
     }
 
     public int getVisualInspection() {
@@ -60,14 +60,6 @@ public class Assembly extends BaseModel {
         this.touch = touch;
     }
 
-    public int getAutoTouch() {
-        return autoTouch;
-    }
-
-    public void setAutoTouch(int autoTouch) {
-        this.autoTouch = autoTouch;
-    }
-
     public int getAudio() {
         return audio;
     }
@@ -82,5 +74,13 @@ public class Assembly extends BaseModel {
 
     public void setEthernet(int ethernet) {
         this.ethernet = ethernet;
+    }
+
+    public int getWifi() {
+        return wifi;
+    }
+
+    public void setWifi(int wifi) {
+        this.wifi = wifi;
     }
 }

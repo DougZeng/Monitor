@@ -453,7 +453,7 @@ public class ServiceReader extends Service implements Reader {
     private void record() {
         if (mW == null) {
 
-            mFile = new File(App.getRootDir(), new StringBuilder().append("Monitor").append("Record-").append(getDate()).append(".csv").toString());
+            mFile = new File(App.getApp().getRootDir(), new StringBuilder().append("Monitor").append("Record-").append(getDate()).append(".csv").toString());
 
             try {
                 mW = new BufferedWriter(new FileWriter(mFile));

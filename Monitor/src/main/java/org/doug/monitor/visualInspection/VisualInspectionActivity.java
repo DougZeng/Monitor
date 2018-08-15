@@ -1,8 +1,10 @@
 package org.doug.monitor.visualInspection;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.widget.CompoundButton;
 
 import org.doug.monitor.R;
@@ -26,13 +28,15 @@ public class VisualInspectionActivity extends BaseActivity implements CountDownV
 
     private static final int MSG_3 = 1102;
 
+    private String visualInspectionMode = "";
+
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg != null) {
                 if (msg.what == MSG_3) {
                     cdv_second.start();
-                    Toaster.showToast(VisualInspectionActivity.this, "测试倒计时15秒！");
+                    Toaster.showToast(VisualInspectionActivity.this, "测试倒计时" + Constans.TEST_TIME_VISUAL + "秒！");
 
                 }
             }
@@ -50,8 +54,16 @@ public class VisualInspectionActivity extends BaseActivity implements CountDownV
         switchButton = (SwitchButton) findViewById(R.id.sb_text_state);
         switchButton.setOnCheckedChangeListener(this);
         cdv_second = (CountDownView) findViewById(R.id.countdown_timer_second);
-        cdv_second.initTime(15);
+        cdv_second.initTime(Constans.TEST_TIME_VISUAL);
         cdv_second.setOnTimeCompleteListener(this);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action)) {
+                visualInspectionMode = action;
+            }
+        }
     }
 
     @Override
@@ -63,8 +75,7 @@ public class VisualInspectionActivity extends BaseActivity implements CountDownV
     @Override
     protected void onResume() {
         super.onResume();
-        Toaster.showToast(this, "3秒后开始测试！");
-        handler.sendEmptyMessageDelayed(MSG_3, 3000);
+        handler.sendEmptyMessageDelayed(MSG_3, Constans.DELAYMILLIS);
     }
 
 
@@ -76,11 +87,13 @@ public class VisualInspectionActivity extends BaseActivity implements CountDownV
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            SharedPreferencesUtils.putToSpfs(this, Constans.TEST_ASSEMBLY_0, 1);
+            if (visualInspectionMode.equals(Constans.ACTION_A + 0)) {
+                SharedPreferencesUtils.putToSpfs(this, Constans.TEST_ASSEMBLY_0, Constans.PASS);
+            } else if (visualInspectionMode.equals(Constans.ACTION_P + 4)) {
+                SharedPreferencesUtils.putToSpfs(this, Constans.TEST_PERFORMANCE_4, Constans.PASS);
+            }
             setResult(RESULT_OK);
             this.finish();
-        } else {
-            SharedPreferencesUtils.putToSpfs(this, Constans.TEST_ASSEMBLY_0, 0);
         }
     }
 }

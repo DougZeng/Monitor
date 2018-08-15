@@ -11,10 +11,12 @@ import com.orhanobut.logger.Logger;
 import org.doug.monitor.R;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.NetworkInterface;
 
 /**
@@ -82,4 +84,29 @@ public class DeviceUtil {
         String address = info.getMacAddress();
         return address;
     }
+
+    public static final String CMD_WLAN = "am start -n com.android.settings/com.android.settings.wifi.WifiSettings";
+    public static final String CMD_ETHERNET = "am start -n com.android.settings/com.android.settings.EthernetSettings";
+    public static final String CMD_SETTINGS = "am start -n com.android.settings/com.android.settings.Settings";
+
+    /**
+     *
+     */
+    public static void execLinuxCommand(String cmd) throws RuntimeException {
+//        String cmd = "sleep 120; am startservice -n com.wesine.managementservice/com.wesine.managementservice.ManagementService";
+        //Runtime对象
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process localProcess = runtime.exec("su");
+            Logger.d(cmd);
+            OutputStream localOutputStream = localProcess.getOutputStream();
+            DataOutputStream localDataOutputStream = new DataOutputStream(localOutputStream);
+            localDataOutputStream.writeBytes(cmd);
+            localDataOutputStream.flush();
+        } catch (IOException e) {
+            Logger.i("strLine:" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

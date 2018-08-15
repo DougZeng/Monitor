@@ -2,10 +2,8 @@ package org.doug.monitor.camera;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,15 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doug.camera.lib.CameraFragment;
 import com.doug.camera.lib.CameraFragmentApi;
-import com.doug.camera.lib.Util;
 import com.doug.camera.lib.configuration.Configuration;
 import com.doug.camera.lib.listeners.CameraFragmentControlsAdapter;
 import com.doug.camera.lib.listeners.CameraFragmentResultAdapter;
@@ -40,7 +37,6 @@ import org.doug.monitor.base.BaseActivity;
 import org.doug.monitor.base.Constans;
 import org.doug.monitor.base.util.SharedPreferencesUtils;
 import org.doug.monitor.base.util.Toaster;
-import org.doug.monitor.displayVersion.DisplayVersionActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,12 +68,19 @@ public class CameraTestActivity extends BaseActivity {
         public boolean handleMessage(Message msg) {
             if (msg != null) {
                 if (msg.what == MSG_CAMERA) {
-                    SharedPreferencesUtils.putToSpfs(CameraTestActivity.this, Constans.TEST_ASSEMBLY_1, 1);
-                    SharedPreferencesUtils.putToSpfs(CameraTestActivity.this, Constans.TEST_PERFORMANCE_4, 1);
+                    if (cameraMode.equals(Constans.ACTION_A + 1)) {
+                        SharedPreferencesUtils.putToSpfs(CameraTestActivity.this, Constans.TEST_ASSEMBLY_1, Constans.PASS);
+                    } else if (cameraMode.equals(Constans.ACTION_P + 5)) {
+                        SharedPreferencesUtils.putToSpfs(CameraTestActivity.this, Constans.TEST_PERFORMANCE_5, Constans.PASS);
+                    }
                     setResult(RESULT_OK);
                     CameraTestActivity.this.finish();
                 } else {
-                    SharedPreferencesUtils.putToSpfs(CameraTestActivity.this, Constans.TEST_PERFORMANCE_4, 0);
+                    if (cameraMode.equals(Constans.ACTION_A + 1)) {
+                        SharedPreferencesUtils.putToSpfs(CameraTestActivity.this, Constans.TEST_ASSEMBLY_1, Constans.FAIL);
+                    } else if (cameraMode.equals(Constans.ACTION_P + 5)) {
+                        SharedPreferencesUtils.putToSpfs(CameraTestActivity.this, Constans.TEST_PERFORMANCE_5, Constans.FAIL);
+                    }
                 }
             }
 
@@ -95,6 +98,20 @@ public class CameraTestActivity extends BaseActivity {
         initView();
 
         initListener();
+
+        initData();
+    }
+
+    private String cameraMode = "";
+
+    private void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action)) {
+                cameraMode = action;
+            }
+        }
     }
 
     private void initListener() {
@@ -134,7 +151,7 @@ public class CameraTestActivity extends BaseActivity {
                                                                    Toaster.showToast(CameraTestActivity.this, filePath);
                                                                    Logger.d("filePath = " + filePath);
                                                                    Logger.d("thread = " + Thread.currentThread() + "");
-                                                                   handler.sendEmptyMessageDelayed(MSG_CAMERA, 3000);
+                                                                   handler.sendEmptyMessageDelayed(MSG_CAMERA, Constans.DELAYMILLIS);
                                                                }
                                                            },
                             null,///storage/self/primary

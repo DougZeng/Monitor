@@ -26,8 +26,8 @@ android {
         applicationId 'org.doug.monitor'
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 180622
-        versionName "18.6.22"
+        versionCode 180712
+        versionName "18.7.12"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 //        multiDexEnabled true
     }
@@ -107,7 +107,7 @@ dependencies {
     compile 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     compile 'com.an.deviceinfo:deviceinfo:0.1.3'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.orhanobut:logger:2.2.0'
     compile 'com.google.protobuf:protobuf-java:3.4.0'
     compile 'com.google.protobuf:protoc:3.1.0'
@@ -115,6 +115,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     implementation files('libs/core-3.2.1.jar')
+
+    compile 'com.bugsnag:bugsnag-android-ndk:1.2.0'
 
 }
 

@@ -15,7 +15,7 @@ import org.doug.monitor.R;
 import org.doug.monitor.audio.AudioTestActivity;
 import org.doug.monitor.base.BaseActivity;
 import org.doug.monitor.base.Constans;
-import org.doug.monitor.base.networktools.NetworktoolsTestActivity;
+import org.doug.monitor.base.networktools.NetTestActivity;
 import org.doug.monitor.base.util.Toaster;
 import org.doug.monitor.scanner.ToolScannerTestActivity;
 import org.doug.monitor.camera.CameraTestActivity;
@@ -36,16 +36,14 @@ public class AssemblyTestActivity extends BaseActivity {
     private ArrayList<MenuItem> items;
 
     private String[] titles = {"外观检测", "摄像头", "扫码器",
-            "触摸手动测试", "触摸自动测试", "喇叭测试",
-            "有线网络测试"};
+            "触摸测试", "喇叭测试", "有线网络测试",
+            "无线网络测试"};
 
     private static final Class<?>[] ASSEMBLYACTIVITYS = {VisualInspectionActivity.class, CameraTestActivity.class, ToolScannerTestActivity.class,
-            TouchActivity.class, TouchActivity.class, AudioTestActivity.class,
-            NetworktoolsTestActivity.class};
+            TouchActivity.class, AudioTestActivity.class, NetTestActivity.class, NetTestActivity.class};
 
     private static final int[] IMGS = {R.drawable.ic_visualinspection, R.drawable.ic_camera, R.drawable.ic_scanner,
-            R.drawable.ic_touch, R.drawable.ic_touch, R.drawable.ic_audio,
-            R.drawable.ic_ethernet};
+            R.drawable.ic_touch, R.drawable.ic_audio, R.drawable.ic_ethernet, R.drawable.ic_wifi};
 
     private Assembly assembly;
 
@@ -54,25 +52,13 @@ public class AssemblyTestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assembly);
         setTitle("组装检测");
-//        setBackBtn();
+        setBackBtn();
         assembly = new Assembly();
-        RecyclerView rv_assembly = (RecyclerView) findViewById(R.id.rv_assembly);
+        initView();
         initData();
-        BaseQuickAdapter adapter = new MenuAdapter(R.layout.menu_item_view, items);
-        adapter.openLoadAnimation();
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(AssemblyTestActivity.this, ASSEMBLYACTIVITYS[position]);
-                 startActivityForResult(intent, ASSEMBLY_REQUEST_CODE[position]);
-            }
-        });
-        rv_assembly.setLayoutManager(new LinearLayoutManager(this));
-        rv_assembly.setItemAnimator(new DefaultItemAnimator());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
-        rv_assembly.addItemDecoration(dividerItemDecoration);
-        rv_assembly.setAdapter(adapter);
+
     }
+
 
     private void initData() {
         items = new ArrayList<MenuItem>();
@@ -83,6 +69,27 @@ public class AssemblyTestActivity extends BaseActivity {
             item.setImageResource(IMGS[i]);
             items.add(item);
         }
+    }
+
+
+    private void initView() {
+        RecyclerView rv_assembly = (RecyclerView) findViewById(R.id.rv_assembly);
+        initData();
+        BaseQuickAdapter adapter = new MenuAdapter(R.layout.menu_item_view, items);
+        adapter.openLoadAnimation();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(AssemblyTestActivity.this, ASSEMBLYACTIVITYS[position]);
+                intent.setAction(Constans.ACTION_A + position);
+                startActivityForResult(intent, ASSEMBLY_REQUEST_CODE[position]);
+            }
+        });
+        rv_assembly.setLayoutManager(new LinearLayoutManager(this));
+        rv_assembly.setItemAnimator(new DefaultItemAnimator());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, LinearLayoutManager.VERTICAL);
+        rv_assembly.addItemDecoration(dividerItemDecoration);
+        rv_assembly.setAdapter(adapter);
     }
 
     @Override
@@ -111,13 +118,13 @@ public class AssemblyTestActivity extends BaseActivity {
                 assembly.setTouch(1);
             } else if (requestCode == ASSEMBLY_REQUEST_CODE[4]) {
                 Toaster.showToast(this, titles[4]);
-                assembly.setAutoTouch(1);
+                assembly.setAudio(1);
             } else if (requestCode == ASSEMBLY_REQUEST_CODE[5]) {
                 Toaster.showToast(this, titles[5]);
-                assembly.setAudio(1);
+                assembly.setEthernet(1);
             } else if (requestCode == ASSEMBLY_REQUEST_CODE[6]) {
                 Toaster.showToast(this, titles[6]);
-                assembly.setEthernet(1);
+                assembly.setWifi(1);
                 Intent intent = new Intent();
                 intent.putExtra(Constans.TEST_ASSEMBLY, assembly);
                 setResult(RESULT_OK, intent);

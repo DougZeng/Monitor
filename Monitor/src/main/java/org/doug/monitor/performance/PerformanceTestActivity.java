@@ -15,15 +15,13 @@ import org.doug.monitor.R;
 import org.doug.monitor.audio.AudioTestActivity;
 import org.doug.monitor.base.BaseActivity;
 import org.doug.monitor.base.Constans;
-import org.doug.monitor.base.networktools.NetworktoolsTestActivity;
+import org.doug.monitor.base.networktools.NetTestActivity;
 import org.doug.monitor.base.util.Toaster;
 import org.doug.monitor.scanner.ToolScannerTestActivity;
 import org.doug.monitor.camera.CameraTestActivity;
-import org.doug.monitor.displayVersion.DisplayVersionActivity;
-import org.doug.monitor.eth.EthMacActivity;
+import org.doug.monitor.version.VersionActivity;
 import org.doug.monitor.menu.MenuAdapter;
 import org.doug.monitor.menu.MenuItem;
-import org.doug.monitor.serialNo.SerialNoActivity;
 import org.doug.monitor.touch.TouchActivity;
 import org.doug.monitor.visualInspection.VisualInspectionActivity;
 
@@ -36,30 +34,27 @@ import java.util.List;
 
 public class PerformanceTestActivity extends BaseActivity {
 
-    private static final Class<?>[] PERFORMANCEACTIVITYS = {DisplayVersionActivity.class, SerialNoActivity.class, EthMacActivity.class,
-            VisualInspectionActivity.class, CameraTestActivity.class, ToolScannerTestActivity.class,
-            TouchActivity.class, TouchActivity.class, AudioTestActivity.class,
-            NetworktoolsTestActivity.class, NetworktoolsTestActivity.class};
-    private static final int[] IMGS = {R.drawable.ic_version, R.drawable.ic_serialno, R.drawable.ic_ethernet,
-            R.drawable.ic_visualinspection, R.drawable.ic_camera, R.drawable.ic_scanner,
-            R.drawable.ic_touch, R.drawable.ic_touch, R.drawable.ic_audio,
+    private static final Class<?>[] PERFORMANCEACTIVITYS = {VersionActivity.class, VisualInspectionActivity.class, CameraTestActivity.class,
+            ToolScannerTestActivity.class, TouchActivity.class, AudioTestActivity.class,
+            NetTestActivity.class, NetTestActivity.class};
+    private static final int[] IMGS = {R.drawable.ic_version, R.drawable.ic_visualinspection, R.drawable.ic_camera,
+            R.drawable.ic_scanner, R.drawable.ic_touch, R.drawable.ic_audio,
             R.drawable.ic_ethernet, R.drawable.ic_wifi};
     private List<MenuItem> items;
     //
-    String[] titles = {"软件版本", "序列码", "有线MAC地址",
-            "外观检测", "摄像头", "扫码器",
-            "触摸主观测试", "触摸自动测试", "喇叭测试",
+    String[] titles = {"基础信息", "外观检测", "摄像头",
+            "扫码器", "触摸测试", "喇叭测试",
             "有线网络测试", "无线网络测试"};
 
     Performance performance;
-    private int[] PERFORMANCE_REQUEST_CODE = {3000, 3001, 3002, 3003, 3004, 3005, 3006, 3007, 3008, 3009, 3010};
+    private int[] PERFORMANCE_REQUEST_CODE = {3000, 3001, 3002, 3003, 3004, 3005, 3006, 3007};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_performance);
         setTitle("电性能测试");
-//        setBackBtn();
+        setBackBtn();
         RecyclerView rv_performance = (RecyclerView) findViewById(R.id.rv_performance);
         initData();
         BaseQuickAdapter adapter = new MenuAdapter(R.layout.menu_item_view, items);
@@ -67,6 +62,7 @@ public class PerformanceTestActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(PerformanceTestActivity.this, PERFORMANCEACTIVITYS[position]);
+                intent.setAction(Constans.ACTION_P + position);
                 startActivityForResult(intent, PERFORMANCE_REQUEST_CODE[position]);
             }
         });
@@ -96,36 +92,30 @@ public class PerformanceTestActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == PERFORMANCE_REQUEST_CODE[0]) {
                 Toaster.showToast(this, titles[0]);
-                performance.setVisualInspection(1);
+                performance.setDisplayVersion(1);
+                performance.setSerialNo(1);
+                performance.setE_mac(1);
+                performance.setW_mac(1);
             } else if (requestCode == PERFORMANCE_REQUEST_CODE[1]) {
                 Toaster.showToast(this, titles[1]);
                 performance.setVisualInspection(1);
             } else if (requestCode == PERFORMANCE_REQUEST_CODE[2]) {
                 Toaster.showToast(this, titles[3]);
-                performance.setVisualInspection(1);
+                performance.setCamera(1);
             } else if (requestCode == PERFORMANCE_REQUEST_CODE[3]) {
                 Toaster.showToast(this, titles[3]);
-                performance.setVisualInspection(1);
+                performance.setScanner(1);
             } else if (requestCode == PERFORMANCE_REQUEST_CODE[4]) {
                 Toaster.showToast(this, titles[4]);
-                performance.setCamera(1);
+                performance.setTouch(1);
             } else if (requestCode == PERFORMANCE_REQUEST_CODE[5]) {
                 Toaster.showToast(this, titles[5]);
-                performance.setScanner(1);
+                performance.setAudio(1);
             } else if (requestCode == PERFORMANCE_REQUEST_CODE[6]) {
                 Toaster.showToast(this, titles[6]);
-                performance.setTouch(1);
+                performance.setEthernet(1);
             } else if (requestCode == PERFORMANCE_REQUEST_CODE[7]) {
                 Toaster.showToast(this, titles[7]);
-                performance.setAutoTouch(1);
-            } else if (requestCode == PERFORMANCE_REQUEST_CODE[8]) {
-                Toaster.showToast(this, titles[8]);
-                performance.setAudio(1);
-            } else if (requestCode == PERFORMANCE_REQUEST_CODE[9]) {
-                Toaster.showToast(this, titles[9]);
-                performance.setEthernet(1);
-            } else if (requestCode == PERFORMANCE_REQUEST_CODE[10]) {
-                Toaster.showToast(this, titles[10]);
                 performance.setWifi(1);
                 Intent intent = new Intent();
                 intent.putExtra(Constans.TEST_PERFORMANCE, performance);

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".base.networktools.NetworktoolsTestActivity"
+    tools:context=".base.networktools.NetTestActivity"
     tools:showIn="@layout/activity_networktoolstest">
 
     <LinearLayout

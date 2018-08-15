@@ -4,23 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.doug.monitor.base.circleprogressbar.CountDownView
-        android:id="@+id/countdown_timer_second"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:textColor="#88000000"
-        android:textSize="36sp"
-        tools:showIn="@layout/activity_display_version" />
-
-
-    <TextView
-        android:id="@+id/tv_displayVersion"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="软件版本号"
-        android:textSize="36sp" />
+        android:orientation="vertical">
+
+        <org.doug.monitor.base.circleprogressbar.CountDownView
+            android:id="@+id/countdown_timer_second"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="#88000000"
+            android:textSize="36sp"
+            tools:showIn="@layout/activity_display_version" />
+
+
+        <TextView
+            android:id="@+id/tv_displayVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="软件版本号"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/tv_serial_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="序列号"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/tv_eth_mac"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="eth0 MAC"
+            android:textSize="36sp" />
+    </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

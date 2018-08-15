@@ -1,9 +1,11 @@
 package org.doug.monitor.touch;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.FrameLayout;
 
 import org.doug.monitor.R;
@@ -35,12 +37,13 @@ public class TouchActivity extends BaseActivity implements CountDownView.OnTimeC
             if (msg != null) {
                 if (msg.what == MSG_9) {
                     cdv_second.start();
-                    Toaster.showToast(TouchActivity.this, "测试倒计时30秒！");
+                    Toaster.showToast(TouchActivity.this, "测试倒计时" + Constans.TEST_TIME_TOUCH + "秒！");
                 } else if (msg.what == MSG_10) {
-                    SharedPreferencesUtils.putToSpfs(TouchActivity.this, Constans.TEST_ASSEMBLY_3, 1);
-                    SharedPreferencesUtils.putToSpfs(TouchActivity.this, Constans.TEST_ASSEMBLY_4, 1);
-                    SharedPreferencesUtils.putToSpfs(TouchActivity.this, Constans.TEST_PERFORMANCE_6, 1);
-                    SharedPreferencesUtils.putToSpfs(TouchActivity.this, Constans.TEST_PERFORMANCE_7, 1);
+                    if (touchMode.equals(Constans.ACTION_A + 3)) {
+                        SharedPreferencesUtils.putToSpfs(TouchActivity.this, Constans.TEST_ASSEMBLY_3, Constans.PASS);
+                    } else if (touchMode.equals(Constans.ACTION_P + 7)) {
+                        SharedPreferencesUtils.putToSpfs(TouchActivity.this, Constans.TEST_PERFORMANCE_7, Constans.PASS);
+                    }
                     setResult(RESULT_OK);
                     TouchActivity.this.finish();
                 }
@@ -57,11 +60,24 @@ public class TouchActivity extends BaseActivity implements CountDownView.OnTimeC
         setTitle("触摸测试");
         setBackBtn();
         cdv_second = (CountDownView) findViewById(R.id.countdown_timer_second);
-        cdv_second.initTime(30);
+        cdv_second.initTime(Constans.TEST_TIME_TOUCH);
         cdv_second.setOnTimeCompleteListener(this);
         TouchSurfaceView touchSurfaceView = new TouchSurfaceView(this);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_main);
         frameLayout.addView(touchSurfaceView);
+        initData();
+    }
+
+    private String touchMode = "";
+
+    private void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action)) {
+                touchMode = action;
+            }
+        }
     }
 
 
@@ -79,14 +95,14 @@ public class TouchActivity extends BaseActivity implements CountDownView.OnTimeC
     @Override
     protected void onResume() {
         super.onResume();
-        handler.sendEmptyMessageDelayed(MSG_9, 3000);
-        Toaster.showToast(this, "3秒后开始测试！");
+        handler.sendEmptyMessageDelayed(MSG_9, Constans.DELAYMILLIS);
+//        Toaster.showToast(this, "3秒后开始测试！");
     }
 
     @Override
     public void onPositiveClick() {
         Toaster.showToast(this, "Pass");
-        handler.sendEmptyMessageDelayed(MSG_10, 1000);
+        handler.sendEmptyMessageDelayed(MSG_10, Constans.DELAYMILLIS);
     }
 
     @Override

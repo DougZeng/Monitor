@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -15,18 +16,19 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.orhanobut.logger.Logger;
 
 import org.doug.monitor.R;
 import org.doug.monitor.base.BaseActivity;
 import org.doug.monitor.base.Constans;
 import org.doug.monitor.base.circleprogressbar.CountDownView;
 import org.doug.monitor.base.util.SharedPreferencesUtils;
-import org.doug.monitor.base.util.Toaster;
 import org.doug.monitor.base.visualizer.BarVisualizer;
 import org.doug.monitor.base.visualizer.test.MediaPlayerService;
-import org.doug.monitor.displayVersion.DisplayVersionActivity;
 
 /**
  * Created by wesine on 2018/6/20.
@@ -41,6 +43,8 @@ public class AudioTestActivity extends BaseActivity implements CountDownView.OnT
     private CountDownView cdv_second;
     private ImageButton ib_play_pause;
     private ImageButton ib_replay;
+
+    private String audioMode = "";
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -57,6 +61,8 @@ public class AudioTestActivity extends BaseActivity implements CountDownView.OnT
         }
     });
 
+    private AudioManager mAudioManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +75,39 @@ public class AudioTestActivity extends BaseActivity implements CountDownView.OnT
         initListener();
 
         initialize();
+
+
+        initVolume();
+
+
+    }
+
+    private void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            String action = intent.getAction();
+            if (!TextUtils.isEmpty(action)) {
+                audioMode = action;
+            }
+        }
+    }
+
+    private void initVolume() {
+        //TODO 自动把声音调节最大
+        if (mAudioManager == null) {
+            mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        }
+        try {
+            int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            Logger.d("currentVolume %d,maxVolume %d", currentVolume, maxVolume);
+            if (currentVolume < maxVolume) {
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void initListener() {
@@ -102,8 +141,7 @@ public class AudioTestActivity extends BaseActivity implements CountDownView.OnT
     @Override
     protected void onResume() {
         super.onResume();
-        Toaster.showToast(this, "3 秒后开始测试！");
-        handler.sendEmptyMessageDelayed(MSG_1, 3000);
+        handler.sendEmptyMessageDelayed(MSG_1, 100);
     }
 
     private void initialize() {
@@ -122,7 +160,7 @@ public class AudioTestActivity extends BaseActivity implements CountDownView.OnT
         barVisualizer.setDensity(70);
 
         cdv_second = (CountDownView) findViewById(R.id.countdown_timer_second);
-        cdv_second.initTime(15);
+        cdv_second.initTime(Constans.TEST_TIME_AUDIO);
         cdv_second.setOnTimeCompleteListener(this);
 
         ib_play_pause = (ImageButton) findViewById(R.id.ib_play_pause);
@@ -131,8 +169,12 @@ public class AudioTestActivity extends BaseActivity implements CountDownView.OnT
 
     @Override
     public void onTimeComplete() {
-        SharedPreferencesUtils.putToSpfs(AudioTestActivity.this, Constans.TEST_ASSEMBLY_5, 1);
-        SharedPreferencesUtils.putToSpfs(AudioTestActivity.this, Constans.TEST_PERFORMANCE_8, 1);
+        ib_play_pause.performClick();
+        if (audioMode.equals(Constans.ACTION_A + 4)) {
+            SharedPreferencesUtils.putToSpfs(AudioTestActivity.this, Constans.TEST_ASSEMBLY_4, Constans.PASS);
+        } else if (audioMode.equals(Constans.ACTION_P + 8)) {
+            SharedPreferencesUtils.putToSpfs(AudioTestActivity.this, Constans.TEST_PERFORMANCE_8, Constans.PASS);
+        }
         setResult(RESULT_OK);
         this.finish();
     }

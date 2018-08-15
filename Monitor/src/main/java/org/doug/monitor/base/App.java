@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.print.PageRange;
 import android.util.Log;
 
+import com.bugsnag.android.Bugsnag;
 import com.doug.monitor.AddressBookProtos;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -33,14 +34,16 @@ public class App extends Application {
     private static Context context;
 
 
-    private static File dir;
+    private File dir;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Bugsnag.init(this);
         app = this;
         context = this;
+        SharedPreferencesUtils.clearSpfs(this);
         installCockroach();
         BlockDetectByPrinter.start();
         Logger.addLogAdapter(new AndroidLogAdapter() {
@@ -69,6 +72,7 @@ public class App extends Application {
             Logger.d(parseFrom.toString());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
+            Bugsnag.notify(e);
         }
         int spfs = (int) SharedPreferencesUtils.getFromSpfs(this, Constans.IS_FIRST_BOOT, Constans.DEFAULT_COUNT);
         if (spfs > 0) {
@@ -83,15 +87,28 @@ public class App extends Application {
         }
     }
 
-    public static File getRootDir() {
+    public File getRootDir() {
         return dir;
     }
+
+    public void deleteFile(File dir) {
+        File[] list = dir.listFiles(); //获取目标文件夹下所有的文件和文件夹数组
+        for (File subFiles : list) {    //遍历
+            if (subFiles.isFile()) {    //判断
+                subFiles.delete(); //是文件就删除
+            } else {
+                deleteFile(subFiles); //是文件夹就遍历
+            }
+        }
+//        dir.delete();
+    }
+
 
     public static App getApp() {
         return app;
     }
 
-    public static void exit() {
+    public void exit() {
         Cockroach.uninstall();
         android.os.Process.killProcess(android.os.Process.myPid());// kill this  test thread
     }
